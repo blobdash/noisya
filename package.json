@@ -1,0 +1,25 @@
+{
+  "name": "noisya",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "deploy-slash": "node ./utils/deploy-slash-commands.js",
+    "init-db": "node ./utils/init-db.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FruityEnLoops/noisya.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FruityEnLoops/noisya/issues"
+  },
+  "homepage": "https://github.com/FruityEnLoops/noisya#readme",
+  "dependencies": {
+    "discord.js": "^14.12.1",
+    "sqlite3": "^5.1.6"
+  }
+}
