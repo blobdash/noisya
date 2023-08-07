@@ -1,0 +1,19 @@
+module.exports = {
+    gameTypes: [
+        {
+            name:"SOUND VOLTEX",
+            value:"sdvx",
+            playtypes: ['Single']
+        },
+        {
+            name:"beatmania IIDX",
+            value:"iidx",
+            playtypes: ['SP', 'DP']
+        },
+        {
+            name:"pop'n music",
+            value:"popn",
+            playtypes: ['9B']
+        }
+    ]
+};
