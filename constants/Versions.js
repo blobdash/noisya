@@ -9,6 +9,7 @@ module.exports = {
         "konaste": "Konaste"
     },
     iidx: {
+        "inf": "INFINITAS",
         "1": "1st style",
         "sub": "substream",
         "2": "2nd style",

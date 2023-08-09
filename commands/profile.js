@@ -29,7 +29,11 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
         let user = interaction.options.getString("username");
-        if(user === null) user = await getLink(interaction.user.id);
+        if(user === null) {
+            user = await getLink(interaction.user.id);
+        } else {
+            user = { username: user };
+        }
         if(user === undefined) {
             await interaction.editReply({ content: "Merci de lier votre compte Tachi avec `/link`.", ephemeral: true });
             return;
