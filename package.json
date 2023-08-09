@@ -20,6 +20,8 @@
   "homepage": "https://github.com/FruityEnLoops/noisya#readme",
   "dependencies": {
     "discord.js": "^14.12.1",
+    "fast-xml-parser": "^4.2.7",
+    "iconv-lite": "^0.6.3",
     "sqlite3": "^5.1.6"
   }
 }

@@ -8,6 +8,7 @@ Noisy.A is a discord.js bot to communicate with Tachi's API.
 - Player card
 - Leaderboards per game / per song / per difficulty
 - Song information display
+- Folder stats lookup
 
 #### SOUND VOLTEX
 - Kanji lookup on song information

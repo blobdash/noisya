@@ -1,29 +1,30 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const Tachi = require('../utils/Tachi');
 const { parseDan } = require('../games/sdvx-utils');
+const { getUserList } = require('../utils/db');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('sdvxlb')
-		.setDescription('Shows the leaderboard for SOUND VOLTEX.'),
+		.setDescription('Affiche le classement SOUND VOLTEX.'),
 	async execute(interaction) {
 		await interaction.deferReply();
         const api = new Tachi();
-        const players = ['literallynotavaliduser', 'nythil', 'blobdash', 'Wormi', 'Adamaq01', 'Aeon', 'Lyne', 'monebreaker', 'OwOrigins', 'Kasumi', 'FireAlphaa']
+        const players = await getUserList();
         const lines = [];
         for(const player of players) {
-            const response = await api.getPlayerProfile(player, 'sdvx', 'Single');
+            const response = await api.getPlayerProfile(player.username, 'sdvx', 'Single');
             if(response.success === true) { // ignore invalid users
                 lines.push({
                     vf: response.body.gameStats.ratings.VF6.toFixed(3),
-                    player: player,
+                    player: player.username,
                     dan: parseDan(response.body.gameStats.classes.dan)
                 })
             }
         }
         lines.sort((a, b) => b.vf - a.vf);
         const lb = new EmbedBuilder();
-        lb.setTitle("SOUND VOLTEX Leaderboard");
+        lb.setTitle("SOUND VOLTEX");
         lb.addFields({name: "Classement", value: processLines(lines)});
         await interaction.editReply({ embeds: [lb] });
 	},

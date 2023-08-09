@@ -21,4 +21,9 @@ module.exports = class Tachi {
         const parsed = await response.json();
         return `${this.cdn}/users/${parsed.body.id}/pfp-${parsed.body.customPfpLocation}`
     }
+
+    async getSongInfo(game, playtype, songId) {
+        const response = await fetch(`${this.baseUrl}/api/v1/games/${game}/${playtype}/songs/${songId}`)
+        return await response.json();
+    }
 }
