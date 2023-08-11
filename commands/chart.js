@@ -31,6 +31,7 @@ module.exports = {
             .setRequired(false)
             .setAutocomplete(true)),
 	async execute(interaction) {
+		await interaction.deferReply();
         playtype = interaction.options.getString("playtype");
         if(playtype === null){
             // playtype isn't specified : use first in array as default.
@@ -40,7 +41,7 @@ module.exports = {
         const api = new Tachi();
         const songData = await api.getSongInfo(interaction.options.getString("game"), playtype, interaction.options.getString("song"));
         if(songData.success === false) {
-            interaction.reply("Chart introuvable.");
+            interaction.editReply("Chart introuvable.");
             return;
         }
         switch (interaction.options.getString("game")) {
@@ -54,10 +55,10 @@ module.exports = {
                 formatPopnSongInfo(songData, emb);
                 break;
             default:
-                interaction.reply("Jeu pas encore supporté!")
+                interaction.editReply("Jeu pas encore supporté!")
                 return;    
         }
-        interaction.reply({ embeds: [emb] });
+        interaction.editReply({ embeds: [emb] });
 	},
     async autocomplete(interaction) {
 		const focusedOption = interaction.options.getFocused(true);

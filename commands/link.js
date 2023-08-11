@@ -10,10 +10,11 @@ module.exports = {
             .setDescription("Tachi Username")
             .setRequired(true)),
 	async execute(interaction) {
+		await interaction.deferReply();
         setLink(
             interaction.options.getString("username"),
             interaction.user.id
         )
-		await interaction.reply({ content: 'Votre compte Tachi a été lié à votre compte Discord.', ephemeral: true });
+		await interaction.editReply({ content: 'Votre compte Tachi a été lié à votre compte Discord.', ephemeral: true });
 	},
 };
