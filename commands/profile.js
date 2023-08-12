@@ -48,15 +48,18 @@ module.exports = {
         const api = new Tachi();
         const profile = await api.getPlayerProfile(user.username, interaction.options.getString("game"), playtype);
         const prfl = new EmbedBuilder();
-        prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} (${playtype})`);
+        prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} ${playtype != 'Single' ? `(${playtype})` : ""}`);
         if(profile.success === false) {
             prfl.addFields({ name: "Erreur", value: `${user.username} n'a pas joué à ce jeu ou dans ce mode de jeu.`})
             await interaction.editReply({ embeds: [prfl]} );
             return;
         }
-        prfl.setThumbnail(await api.resolveUserPfp(user.username));
         populateProfile(prfl, profile, interaction.options.getString("game"));
-		await interaction.editReply({ embeds: [prfl] });
+        prfl.setThumbnail("attachment://image.png");
+		await interaction.editReply({ embeds: [prfl], files: [{
+            attachment: await api.resolveUserPfp(user.username),
+            name:'image.png'
+          }] });
 	},
     async autocomplete(interaction) {
         const game = gameTypes.find((game) => game.value === interaction.options.getString("game"));

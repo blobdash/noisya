@@ -11,7 +11,7 @@ module.exports = {
             { name: "BPI", value: profile.body.gameStats.ratings.BPI == null ? "-" : profile.body.gameStats.ratings.BPI.toFixed(2) },
             { name: "Dan", value: module.exports.parseDan(profile.body.gameStats.classes.dan) },
             { name: "Playcount", value: profile.body.totalScores+"" },
-            { name: "Joue depuis", value: new Date(profile.body.firstScore.timeAchieved).toLocaleString() }
+            { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" }
         )
     },
     formatIidxSongInfo(songData, emb) {

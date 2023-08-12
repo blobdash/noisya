@@ -12,7 +12,7 @@ module.exports = {
             { name: "Naive Rating", value: profile.body.gameStats.ratings.naiveRating.toFixed(2) },
             { name: "Couleur", value: `${profile.body.gameStats.classes.colour}(${module.exports.parseClass(profile.body.gameStats.classes.colour)})` },
             { name: "Playcount", value: profile.body.totalScores+"" },
-            { name: "Joue depuis", value: new Date(profile.body.firstScore.timeAchieved).toLocaleString() },
+            { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.naiveRating.ranking}/${profile.body.rankingData.naiveRating.outOf}`}
         )
     },

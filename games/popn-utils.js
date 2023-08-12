@@ -6,7 +6,7 @@ module.exports = {
             { name: "Naive Class", value: profile.body.gameStats.ratings.naiveClassPoints.toFixed(2) },
             { name: "Rang", value: profile.body.gameStats.classes.class },
             { name: "Playcount", value: profile.body.totalScores+"" },
-            { name: "Joue depuis", value: new Date(profile.body.firstScore.timeAchieved).toLocaleString() }
+            { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" }
         )
     },
     formatPopnSongInfo(songData, emb) {

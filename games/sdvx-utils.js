@@ -20,7 +20,7 @@ module.exports = {
             { name: "VF6", value: profile.body.gameStats.ratings.VF6.toFixed(3) },
             { name: "Dan", value: module.exports.parseDan(profile.body.gameStats.classes.dan) },
             { name: "Playcount", value: profile.body.totalScores+"" },
-            { name: "Joue depuis", value: new Date(profile.body.firstScore.timeAchieved).toLocaleString() },
+            { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.VF6.ranking}/${profile.body.rankingData.VF6.outOf}`}
         )
     },
