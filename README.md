@@ -24,14 +24,13 @@ Noisy.A is a discord.js bot to communicate with Tachi's API.
 
 - Install dependencies : `npm i`
 - Create the internal SQLite database : `npm run init-db`
-- Import Tachi seeds and SDVX music_db to the database : `npm run merge-data`
-
-*this requires a `music_db.xml` to be copied to this repository.*
-
+- Create a `data` folder and copy Tachi seeds and a SOUND VOLTEX `music_db.xml` to it.
 - Copy the `config.sample.json` to `config.json` and fill it.
 - Deploy slash commands : `npm run deploy-slash`
 
 ### Run
+
+For development : `npm run start`.
 
 You've got a few ways to host this :
 - Create a systemd service with the correct node runtime, working directory and executables.
