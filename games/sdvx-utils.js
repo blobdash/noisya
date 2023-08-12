@@ -4,9 +4,6 @@ const iconv = require("iconv-lite");
 const { sdvx } = require('../constants/Versions');
 const { sdvx_cdn } = require('../config.json');
 
-const sdvxcharts = require('../data/charts-sdvx.json');
-const sdvxsongs = require('../data/songs-sdvx.json');
-
 module.exports = {
     parseDan(dan) {
         if(dan === undefined) return 'n/a';
