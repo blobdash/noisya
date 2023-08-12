@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "deploy-slash": "node ./utils/deploy-slash-commands.js",
-    "init-db": "node ./utils/init-db.js"
+    "init-db": "node ./utils/init-db.js",
+    "fetch-data": "node ./utils/fetch-zetaraku.js"
   },
   "repository": {
     "type": "git",

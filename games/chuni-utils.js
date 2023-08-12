@@ -1,0 +1,41 @@
+const { chuni_classes } = require("../constants/Classes");
+const { chuni } = require("../constants/Versions");
+const { songs } = require("../data/chuni-zetaraku.json");
+const { zetaraku_cdn } = require('../config.json');
+
+module.exports = {
+    parseClass(clazz) {
+        return chuni_classes[clazz];
+    },
+    populateChuniProfile(prfl, profile) {
+        prfl.addFields(
+            { name: "Naive Rating", value: profile.body.gameStats.ratings.naiveRating.toFixed(2) },
+            { name: "Couleur", value: `${profile.body.gameStats.classes.colour}(${module.exports.parseClass(profile.body.gameStats.classes.colour)})` },
+            { name: "Playcount", value: profile.body.totalScores+"" },
+            { name: "Joue depuis", value: new Date(profile.body.firstScore.timeAchieved).toLocaleString() },
+            { name: "Rang sur Tachi", value: `#${profile.body.rankingData.naiveRating.ranking}/${profile.body.rankingData.naiveRating.outOf}`}
+        )
+    },
+    formatChuniSongInfo(songData, emb) {
+        // Find the song in the zetaraku chart data.
+        zetarakuMatch = songs.find((song) => song.title === songData.body.song.title);
+        if(zetarakuMatch === undefined) {
+            // Song was not found. No cover will be displayed.
+        } else {
+            emb.setImage(`${zetaraku_cdn}/chunithm/img/cover/${zetarakuMatch.imageName}`)
+        }
+        emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
+        emb.addFields(
+            { name: "Catégorie", value: songData.body.song.data.genre },
+            { name: "Version", value: chuni[songData.body.song.data.displayVersion] }
+        )
+        const charts = songData.body.charts.sort((a, b) => b.levelNum - a.levelNum);
+        let buffer = "";
+        for(const chart of charts) {
+            buffer = `${buffer.length != 0 ? `${buffer}\n`: ""} ${chart.difficulty} ${chart.level} (${chart.levelNum})`
+        }
+        emb.addFields(
+            { name: "Difficultés", value: buffer }
+        )
+    }
+}

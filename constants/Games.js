@@ -14,6 +14,11 @@ module.exports = {
             name:"pop'n music",
             value:"popn",
             playtypes: ['9B']
+        },
+        {
+            name:"CHUNITHM",
+            value:"chunithm",
+            playtypes: ['Single']
         }
     ]
 };

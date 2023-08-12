@@ -41,5 +41,23 @@ module.exports = {
         "28": "BISTROVER",
         "29": "CastHour",
         "30": "Resident",
+    },
+    chuni: {
+        "chuni": "CHUNITHM",
+        "chuniplus": "CHUNITHM PLUS",
+        "air": "AIR",
+        "airplus": "AIR PLUS",
+        "star": "STAR",
+        "starplus": "STAR PLUS",
+        "amazon": "AMAZON",
+        "amazonplus": "AMAZON PLUS",
+        "crystal": "CRYSTAL",
+        "crystalplus": "CRYSTAL PLUS",
+        "paradise": "PARADISE",
+        "paradiselost": "PARADISE LOST",
+        "new": "NEW",
+        "newplus": "NEW PLUS",
+        "sun": "SUN",
+        "sunplus": "SUN PLUS"
     }
 }

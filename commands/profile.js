@@ -5,6 +5,7 @@ const Tachi = require('../utils/Tachi.js');
 const { populateSdvxProfile } = require('../games/sdvx-utils.js');
 const { populateIidxProfile } = require('../games/iidx-utils.js');
 const { populatePopnProfile } = require('../games/popn-utils.js');
+const { populateChuniProfile } = require('../games/chuni-utils.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,7 +17,8 @@ module.exports = {
             .setRequired(true)
             .addChoices(gameTypes[0])
             .addChoices(gameTypes[1])
-            .addChoices(gameTypes[2]))
+            .addChoices(gameTypes[2])
+            .addChoices(gameTypes[3]))
         .addStringOption(option => 
             option.setName("playtype")
             .setDescription("Mode de jeu")
@@ -46,7 +48,7 @@ module.exports = {
         const api = new Tachi();
         const profile = await api.getPlayerProfile(user.username, interaction.options.getString("game"), playtype);
         const prfl = new EmbedBuilder();
-        prfl.setTitle(`${user.username} | ${interaction.options.getString("game")} (${playtype})`);
+        prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} (${playtype})`);
         if(profile.success === false) {
             prfl.addFields({ name: "Erreur", value: `${user.username} n'a pas joué à ce jeu ou dans ce mode de jeu.`})
             await interaction.editReply({ embeds: [prfl]} );
@@ -79,6 +81,8 @@ function populateProfile(prfl, profile, game) {
             return populateIidxProfile(prfl, profile);
         case 'popn':
             return populatePopnProfile(prfl, profile);
+        case 'chunithm':
+            return populateChuniProfile(prfl, profile);
         default:
             break;
     }

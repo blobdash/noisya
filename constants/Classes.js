@@ -20,5 +20,18 @@ module.exports = {
         "KYU_6": "六級(6th)",
         "KYU_7": "七級(7th)",
         undefined: "ノ段"
+    },
+    chuni_classes: {
+        "BLUE": "青",
+        "GREEN": "緑",
+        "ORANGE": "橙",
+        "RED": "赤",
+        "PURPLE": "紫",
+        "COPPER": "銅",
+        "SILVER": "銀",
+        "GOLD": "金",
+        "PLATINUM": "鉑",
+        "RAINBOW": "虹",
+        undefined: "-"
     }
 }
