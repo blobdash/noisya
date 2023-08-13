@@ -1,7 +1,7 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const Tachi = require('../utils/Tachi');
 const { getUserList } = require('../utils/db');
-const { lb_pagesize } = require('../config.json');
+const { lb_pagesize_small } = require('../config.json');
 const { parseClass } = require('../games/jubeat-utils');
 
 module.exports = {
@@ -33,10 +33,10 @@ module.exports = {
         // paginate
         let page = interaction.options.getInteger("page");
         if(page === null) page = 1;
-        lines = lines.slice((page - 1) * lb_pagesize, page * lb_pagesize);
+        lines = lines.slice((page - 1) * lb_pagesize_small, page * lb_pagesize_small);
         const lb = new EmbedBuilder();
         lb.setTitle(`jubeat`);
-        lb.addFields({name: `Classement (Page ${page})`, value: processLines(lines, (page - 1) * lb_pagesize)});
+        lb.addFields({name: `Classement (Page ${page})`, value: processLines(lines, (page - 1) * lb_pagesize_small)});
         await interaction.editReply({ embeds: [lb] });
 	}
 };
