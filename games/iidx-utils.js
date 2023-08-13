@@ -86,7 +86,7 @@ function formatDiffTierList(tier) {
 function getTextageUrl(chart, title, table, playtype) {
     const textageMatch = findSong(title, table);
     if(textageMatch) {
-        return `https://textage.cc/score/${textageMatch.version}/${textageMatch.name}.html?${side[playtype]}${difficulty_textage[chart.difficulty]}${chart.levelNum.toString(16)}00`;
+        return `https://textage.cc/score/${textageMatch.ver}/${textageMatch.name}.html?${side[playtype]}${difficulty_textage[chart.difficulty]}${chart.levelNum.toString(16)}00`;
     }
     return null;
 }
