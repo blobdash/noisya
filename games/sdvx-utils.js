@@ -51,7 +51,7 @@ module.exports = {
         const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
         let buffer = "";
         for(const chart of charts) {
-            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${await formatDiffText(chart, songData.body.song.title)} ${formatDiffTierList(chart)}`
+            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${await formatDiffText(chart, songData.body.song.title)}${formatDiffTierList(chart)}`
         }
         emb.addFields(
             { name: "Difficultés", value: buffer }
@@ -61,7 +61,7 @@ module.exports = {
 
 function formatDiffTierList(chart) {
     if(chart.data.clearTier) {
-        return `(${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
+        return ` (${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
     } else return "\u200B";
 }
 
