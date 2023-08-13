@@ -19,11 +19,15 @@ module.exports = class Tachi {
     async resolveUserPfp(userid) {
         const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}`);
         const parsed = await response.json();
-        return `${this.cdn}/users/${parsed.body.id}/pfp-${parsed.body.customPfpLocation}`
+        return `${this.cdn}/users/${parsed.body.id}/pfp-${parsed.body.customPfpLocation}`;
     }
 
     async getSongInfo(game, playtype, songId) {
-        const response = await fetch(`${this.baseUrl}/api/v1/games/${game}/${playtype}/songs/${songId}`)
+        const response = await fetch(`${this.baseUrl}/api/v1/games/${game}/${playtype}/songs/${songId}`);
         return await response.json();
+    }
+
+    getProfileUrl(username, game, playtype) {
+        return `${this.baseUrl}/u/${username}/games/${game}/${playtype}`;
     }
 }

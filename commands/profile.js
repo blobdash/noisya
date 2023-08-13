@@ -51,6 +51,7 @@ module.exports = {
         const profile = await api.getPlayerProfile(user.username, interaction.options.getString("game"), playtype);
         const prfl = new EmbedBuilder();
         prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} ${playtype != 'Single' ? `(${playtype})` : ""}`);
+        prfl.setURL(api.getProfileUrl(user.username, interaction.options.getString("game"), playtype));
         if(profile.success === false) {
             prfl.addFields({ name: "Erreur", value: `${user.username} n'a pas joué à ce jeu ou dans ce mode de jeu.`})
             await interaction.editReply({ embeds: [prfl]} );
