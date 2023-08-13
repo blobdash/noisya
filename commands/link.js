@@ -10,7 +10,7 @@ module.exports = {
             .setDescription("Tachi Username")
             .setRequired(true)),
 	async execute(interaction) {
-		await interaction.deferReply();
+		await interaction.deferReply({ ephemeral: true });
         setLink(
             interaction.options.getString("username"),
             interaction.user.id
