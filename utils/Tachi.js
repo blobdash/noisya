@@ -30,4 +30,9 @@ module.exports = class Tachi {
     getProfileUrl(username, game, playtype) {
         return `${this.baseUrl}/u/${username}/games/${game}/${playtype}`;
     }
+
+    async getUserSessions(userid, game, playtype) {
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}/${playtype}/sessions?search=`);
+        return await response.json();
+    }
 }
