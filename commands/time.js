@@ -52,7 +52,7 @@ module.exports = {
         for(let session of sessions.body) {
             time += session.timeEnded - session.timeStarted;
         }
-		await interaction.editReply({ content: `${user.username} a joué a ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} pendant ${formatTime(time)}.` });
+		await interaction.editReply({ content: `${user.username} a joué(e) a ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} pendant ${formatTime(time)}.` });
 	},
 };
 
