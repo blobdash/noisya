@@ -33,5 +33,18 @@ module.exports = {
         "PLATINUM": "鉑",
         "RAINBOW": "虹",
         undefined: "-"
+    },
+    jubeat_classes: {
+        "BLACK": "Black",
+        "YELLOW_GREEN": "Yel-Gre",
+        "GREEN": "Green",
+        "LIGHT_BLUE": "L. Blue",
+        "BLUE": "Blue",
+        "VIOLET": "Violet",
+        "PURPLE": "Purple",
+        "PINK": "Pink",
+        "ORANGE": "Orange",
+        "GOLD": "Gold",
+        undefined: "/"
     }
 }

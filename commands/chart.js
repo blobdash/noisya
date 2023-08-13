@@ -5,11 +5,13 @@ const { formatSdvxSongInfo } = require('../games/sdvx-utils.js');
 const { formatIidxSongInfo } = require('../games/iidx-utils.js');
 const { formatPopnSongInfo } = require('../games/popn-utils.js');
 const { formatChuniSongInfo } = require('../games/chuni-utils.js');
+const { formatJubeatSongInfo } = require('../games/jubeat-utils.js');
 
 const sdvxsongs = require('../data/songs-sdvx.json');
 const iidxsongs = require('../data/songs-iidx.json');
 const popnsongs = require('../data/songs-popn.json');
 const chunisongs = require('../data/songs-chunithm.json');
+const jubeatsongs = require('../data/songs-jubeat.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -22,7 +24,8 @@ module.exports = {
             .addChoices(gameTypes[0])
             .addChoices(gameTypes[1])
             .addChoices(gameTypes[2])
-            .addChoices(gameTypes[3]))
+            .addChoices(gameTypes[3])
+            .addChoices(gameTypes[4]))
         .addStringOption(option =>
             option.setName("song")
             .setDescription("Chart")
@@ -59,6 +62,9 @@ module.exports = {
                 break;
             case "chunithm":
                 formatChuniSongInfo(songData, emb);
+                break;
+            case "jubeat":
+                formatJubeatSongInfo(songData, emb);
                 break;
             default:
                 interaction.editReply("Jeu pas encore supporté!")
@@ -112,5 +118,7 @@ function resolveGameSongslist(game) {
             return popnsongs;
         case "chunithm":
             return chunisongs;
+        case "jubeat":
+            return jubeatsongs;
     }
 }

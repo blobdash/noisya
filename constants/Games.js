@@ -19,6 +19,11 @@ module.exports = {
             name:"CHUNITHM",
             value:"chunithm",
             playtypes: ['Single']
+        },
+        {
+            name:"jubeat",
+            value:"jubeat",
+            playtypes: ['Single']
         }
     ]
 };

@@ -1,0 +1,40 @@
+const { jubeat_classes } = require("../constants/Classes");
+const { jubeat } = require("../constants/Versions");
+const { songs } = require("../data/jubeat-zetaraku.json");
+const { zetaraku_cdn } = require('../config.json');
+
+module.exports = {
+    parseClass(clazz) {
+        return jubeat_classes[clazz];
+    },
+    populateJubeatProfile(prfl, profile) {
+        prfl.addFields(
+            { name: "Jubility", value: `${profile.body.gameStats.ratings.jubility.toFixed(2)} (${profile.body.gameStats.ratings.naiveJubility.toFixed(2)})` },
+            { name: "Couleur", value: module.exports.parseClass(profile.body.gameStats.classes.colour) },
+            { name: "Playcount", value: profile.body.totalScores+"" },
+            { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
+            { name: "Rang sur Tachi", value: `#${profile.body.rankingData.jubility.ranking}/${profile.body.rankingData.jubility.outOf}`}
+        )
+    },
+    formatJubeatSongInfo(songData, emb) {
+        // Find the song in the zetaraku chart data.
+        zetarakuMatch = songs.find((song) => song.title === songData.body.song.title);
+        if(zetarakuMatch === undefined) {
+            // Song was not found. No cover will be displayed.
+        } else {
+            emb.setImage(`${zetaraku_cdn}/jubeat/img/cover/${zetarakuMatch.imageName}`)
+        }
+        emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
+        emb.addFields(
+            { name: "Version", value: jubeat[songData.body.song.data.displayVersion] }
+        )
+        const charts = songData.body.charts.filter((chart) => !chart.difficulty.startsWith("HARD")).sort((a, b) => b.levelNum - a.levelNum);
+        let buffer = "";
+        for(const chart of charts) {
+            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${chart.difficulty} ${chart.levelNum}`
+        }
+        emb.addFields(
+            { name: "Difficultés", value: buffer }
+        )
+    }
+}

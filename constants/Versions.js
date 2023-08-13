@@ -59,5 +59,17 @@ module.exports = {
         "newplus": "NEW PLUS",
         "sun": "SUN",
         "sunplus": "SUN PLUS"
+    },
+    jubeat: {
+        "jubeat": "jubeat",
+        "ripples": "ripples",
+        "knit": "knit",
+        "copious": "copious",
+        "saucer": "saucer",
+        "prop": "prop",
+        "qubell": "Qubell",
+        "clan": "clan",
+        "festo": "festo",
+        "ave": "Ave."
     }
 }
