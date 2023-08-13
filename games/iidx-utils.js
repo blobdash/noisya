@@ -82,7 +82,7 @@ function getTextageUrl(chart, title, table, playtype) {
 
 function findSongInTable(song, table) {
     for(const [key, value] of Object.entries(table)) {
-        if(value[5] === song) return key;
+        if(value[5].includes(song)) return key;
     }
     return null;
 }
