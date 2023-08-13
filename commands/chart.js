@@ -52,7 +52,7 @@ module.exports = {
         }
         switch (interaction.options.getString("game")) {
             case "sdvx":
-                formatSdvxSongInfo(songData, emb);
+                await formatSdvxSongInfo(songData, emb);
                 break;
             case "iidx":
                 formatIidxSongInfo(songData, emb);

@@ -3,6 +3,7 @@ const fs = require("fs");
 const iconv = require("iconv-lite");
 const { sdvx } = require('../constants/Versions');
 const { sdvx_cdn } = require('../config.json');
+const { match } = require('assert');
 
 module.exports = {
     parseDan(dan) {
@@ -24,7 +25,7 @@ module.exports = {
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.VF6.ranking}/${profile.body.rankingData.VF6.outOf}`}
         )
     },
-    formatSdvxSongInfo(songData, emb) {
+    async formatSdvxSongInfo(songData, emb) {
         // Read music_db.xml. Since it's encoded in Shift JIS, some iconv wizardry is needed.
         const musicDb = fs.readFileSync('./data/music_db.xml');
         const musicDbDecr = iconv.decode(Buffer.from(musicDb), "Shift_JIS");
@@ -50,7 +51,7 @@ module.exports = {
         const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
         let buffer = "";
         for(const chart of charts) {
-            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${chart.difficulty} ${chart.level} ${formatDiffTierList(chart)}`
+            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${await formatDiffText(chart, songData.body.song.title)} ${formatDiffTierList(chart)}`
         }
         emb.addFields(
             { name: "Difficultés", value: buffer }
@@ -62,4 +63,44 @@ function formatDiffTierList(chart) {
     if(chart.data.clearTier) {
         return `(${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
     } else return "\u200B";
+}
+
+async function formatDiffText(chart, title) {
+    const cvLink = await fetchSdvxInLink(chart, title);
+    if(cvLink) {
+        return `[${chart.difficulty} ${chart.level}](${cvLink})`;
+    }
+    return `${chart.difficulty} ${chart.level}`;
+}
+
+async function fetchSdvxInLink(chart, title) {
+    const response = await fetch(`https://sdvx.in/sort/sort_${chart.levelNum}.htm`);
+    const parsedPage = await response.text();
+    const lines = parsedPage.split("\n");
+    const match = lines.find((line) => line.includes(title));
+    if(match) {
+        code = match.slice(20, 25);
+        return `https://sdvx.in/${getVersionCode(chart, code)}/${code}${chart.difficulty.toLowerCase().charAt(0)}.htm`
+    }
+    return null;
+}
+
+function getVersionCode(chart, code) {
+    switch (chart.difficulty) {
+        case "MXM":
+        case "EXH":
+        case "ADV":
+        case "NOV":
+            return code.slice(0, 2);
+        case "INF":
+            return "02";
+        case "GRV":
+            return "03";
+        case "HVN":
+            return "04";
+        case "VVD":
+            return "05";
+        case "XCD":
+            return "06";
+    }
 }
