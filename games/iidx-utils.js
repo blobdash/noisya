@@ -1,5 +1,19 @@
+const vm = require('vm');
+const iconv = require("iconv-lite");
 const { iidx_classes } = require("../constants/Classes");
 const { iidx } = require("../constants/Versions");
+
+const difficulty_textage = {
+    "LEGGENDARIA": "X",
+    "ANOTHER": "A",
+    "HYPER": "H",
+    "NORMAL": "N"
+}
+
+const side = {
+    "SP": "1",
+    "DP": "D"
+}
 
 module.exports = {
     parseDan(dan) {
@@ -15,17 +29,28 @@ module.exports = {
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.ktLampRating.ranking}/${profile.body.rankingData.ktLampRating.outOf}`}
         )
     },
-    formatIidxSongInfo(songData, emb) {
+    async formatIidxSongInfo(songData, emb, playtype) {
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title} (${songData.body.charts[0].playtype})`);
         emb.addFields(
             { name: "Genre", value: songData.body.song.data.genre },
             { name: "Version", value: iidx[songData.body.song.data.displayVersion] }
         )
+        
+        // init textage db
+        const url = "https://textage.cc/score/titletbl.js";
+        const response = await fetch(url);
+        const tablejs = await response.arrayBuffer();
+        const jsDecr = iconv.decode(Buffer.from(tablejs), "Shift_JIS");
+        context = { titletbl: [] };
+        vm.createContext(context);
+        vm.runInContext(jsDecr, context);
+
         const charts = songData.body.charts.filter((c) => c.data["2dxtraSet"] === null).sort((a, b) => b.levelNum - a.levelNum);
         for(const chart of charts) {
+            const textageUrl = getTextageUrl(chart, songData.body.song.title, context.titletbl, playtype);
             emb.addFields(
                 { name: `${chart.difficulty} ${chart.level}`, value:
-                    `${formatTierlistLine(chart)}
+                    `${formatTierlistLine(chart)} ${textageUrl ? `\n[Textage](${textageUrl})` : ""}
                     Max EX : ${chart.data.notecount * 2}`
                 }
             )
@@ -45,4 +70,19 @@ function formatDiffTierList(tier) {
     if(tier) {
         return `${tier.text}${tier.individualDifference ? " ⚖️" : ""}`
     } else return "-";
+}
+
+function getTextageUrl(chart, title, table, playtype) {
+    const textageKey = findSongInTable(title, table);
+    if(textageKey) {
+        return `https://textage.cc/score/${table[textageKey][0]}/${textageKey}.html?${side[playtype]}${difficulty_textage[chart.difficulty]}${chart.levelNum.toString(16)}00`;
+    }
+    return null;
+}
+
+function findSongInTable(song, table) {
+    for(const [key, value] of Object.entries(table)) {
+        if(value[5] === song) return key;
+    }
+    return null;
 }

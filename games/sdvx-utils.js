@@ -3,7 +3,6 @@ const fs = require("fs");
 const iconv = require("iconv-lite");
 const { sdvx } = require('../constants/Versions');
 const { sdvx_cdn } = require('../config.json');
-const { match } = require('assert');
 
 module.exports = {
     parseDan(dan) {

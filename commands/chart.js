@@ -55,7 +55,7 @@ module.exports = {
                 await formatSdvxSongInfo(songData, emb);
                 break;
             case "iidx":
-                formatIidxSongInfo(songData, emb);
+                await formatIidxSongInfo(songData, emb, playtype);
                 break;
             case "popn":
                 formatPopnSongInfo(songData, emb);
