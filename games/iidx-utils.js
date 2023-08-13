@@ -1,4 +1,6 @@
-const vm = require('vm');
+const acorn = require("acorn");
+const entities = require("html-entities");
+const {distance, closest} = require('fastest-levenshtein');
 const iconv = require("iconv-lite");
 const { iidx_classes } = require("../constants/Classes");
 const { iidx } = require("../constants/Versions");
@@ -14,6 +16,17 @@ const side = {
     "SP": "1",
     "DP": "D"
 }
+
+const edgeCases = [ // Needed because some songs just have different names that don't work with levenshtein
+    {'query': 'サナ・モレッテ・ネ・エンテ', 'name': 'sanamol'},
+    {'query': 'サナ・モレッテ・ネ・エンテ(B.L.T.STYLE)', 'name': 'sana_blt'},
+    {'query': 'THE BIG VOYAGER', 'name': 'tvoyager'},
+    {'query': 'ＵＬＴｉＭΛＴＥ', 'name': 'ultimate'},
+    {'query': 'Back Into The Light (recut)', 'name': 'backindd'},
+    {'query': 'The Hope of Tomorrow (recut)', 'name': 'thehoped'},
+    {'query': 'CROSSROAD ～Left Story～', 'name': 'crosroad'},
+    {'query': 'City Never Sleeps (IIDX Edition)', 'name': 'citynvrs'},
+]
 
 module.exports = {
     parseDan(dan) {
@@ -41,13 +54,11 @@ module.exports = {
         const response = await fetch(url);
         const tablejs = await response.arrayBuffer();
         const jsDecr = iconv.decode(Buffer.from(tablejs), "Shift_JIS");
-        context = { titletbl: [] };
-        vm.createContext(context);
-        vm.runInContext(jsDecr, context);
+        const textageTable = parseJs(jsDecr);
 
         const charts = songData.body.charts.filter((c) => c.data["2dxtraSet"] === null).sort((a, b) => b.levelNum - a.levelNum);
         for(const chart of charts) {
-            const textageUrl = getTextageUrl(chart, songData.body.song.title, context.titletbl, playtype);
+            const textageUrl = getTextageUrl(chart, songData.body.song.title, textageTable, playtype);
             emb.addFields(
                 { name: `${chart.difficulty} ${chart.level}`, value:
                     `${formatTierlistLine(chart)} ${textageUrl ? `\n[Textage](${textageUrl})` : ""}
@@ -73,16 +84,47 @@ function formatDiffTierList(tier) {
 }
 
 function getTextageUrl(chart, title, table, playtype) {
-    const textageKey = findSongInTable(title, table);
-    if(textageKey) {
-        return `https://textage.cc/score/${table[textageKey][0]}/${textageKey}.html?${side[playtype]}${difficulty_textage[chart.difficulty]}${chart.levelNum.toString(16)}00`;
+    const textageMatch = findSong(title, table);
+    if(textageMatch) {
+        return `https://textage.cc/score/${textageMatch.version}/${textageMatch.name}.html?${side[playtype]}${difficulty_textage[chart.difficulty]}${chart.levelNum.toString(16)}00`;
     }
     return null;
 }
 
-function findSongInTable(song, table) {
-    for(const [key, value] of Object.entries(table)) {
-        if(value[5].includes(song)) return key;
+// Author : Sayaka
+// Parses the js using acorn without executing it, with proper json mapping and html entities cleanup
+function parseJs(text) {
+    const ast = acorn.parse(text, {ecmaVersion: 'latest'});
+    const objname = ast.body[ast.body.length - 1].expression.left.name;
+    if (objname === 'titletbl') {
+        const res = ast.body[ast.body.length - 1].expression.right.properties.map(x => (
+            {
+                "name": x.key.value,
+                "ver": x.value.elements[0].value,
+                "id": x.value.elements[1].value,
+                "opt": x.value.elements[2].value,
+                "genre": x.value.elements[3].value,
+                "artist": x.value.elements[4].value,
+                "title": x.value.elements[5].type === 'CallExpression' ? entities.decode(x.value.elements[5].callee.object.value).replace( /(<([^>]+)>)/ig, '') : entities.decode(x.value.elements[5].value).replace( /(<([^>]+)>)/ig, ''),
+                "subtitle": x.value.elements.length === 7 ? x.value.elements[6].type === 'CallExpression' ? entities.decode(x.value.elements[6].callee.object.value).replace( /(<([^>]+)>)/ig, '') : entities.decode(x.value.elements[6].value).replace( /(<([^>]+)>)/ig, '') : ""
+            }
+        ));
+        return res;
     }
     return null;
-}
+};
+
+function findSong(title, songs) {
+    let r = songs.find(x => x.title + x.subtitle === title);
+    if(r === undefined) r = edgeCases.find(x => x.query === title);
+    if(r !== undefined) {
+        // matched edge case; return the entire object by going through the table (edge case is loose)
+        return songs.find(x => x.name === r.name);
+    } else {
+        const fallback = closest(title, songs.map(x => x.title + x.subtitle));
+        const d = distance(title, fallback);
+        if (d <= 4)
+            r = songs.find(x => x.title + x.subtitle === fallback);
+    }
+    return r;
+};
