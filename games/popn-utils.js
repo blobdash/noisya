@@ -23,5 +23,24 @@ module.exports = {
         emb.addFields(
             { name: "Difficultés", value: buffer }
         )
+    },
+    feedPopnLbLines(response, lines, player) {
+        lines.push({
+            classpoints: response.body.gameStats.ratings.naiveClassPoints.toFixed(2),
+            player: player.username,
+            class: response.body.gameStats.classes.class ? response.body.gameStats.classes.class : "NO CLASS"
+        })
+    },
+    sortPopnLbLines(lines) {
+        lines.sort((a, b) => b.classpoints - a.classpoints);
+    },
+    formatPopnLbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.classpoints+"").padStart(6)} | ${line.class.padStart(10)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
     }
 }

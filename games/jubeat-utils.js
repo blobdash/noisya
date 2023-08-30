@@ -36,5 +36,25 @@ module.exports = {
         emb.addFields(
             { name: "Difficultés", value: buffer }
         )
+    },
+    feedJubeatLbLines(response, lines, player) {
+        lines.push({
+            jubility: response.body.gameStats.ratings.jubility.toFixed(2),
+            naiveJubilityDiff: (response.body.gameStats.ratings.jubility - response.body.gameStats.ratings.naiveJubility).toFixed(2),
+            player: player.username,
+            colour: module.exports.parseClass(response.body.gameStats.classes.colour)
+        })
+    },
+    sortJubeatLbLines(lines) {
+        lines.sort((a, b) => b.jubility - a.jubility);
+    },
+    formatJubeatLbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.jubility+"").padStart(7)} ${`(${line.naiveJubilityDiff})`.padStart("9")} | ${line.colour.padStart(7)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
     }
 }

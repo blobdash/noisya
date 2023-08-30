@@ -66,6 +66,26 @@ module.exports = {
                 }
             )
         }
+    },
+    feedIidxLbLines(response, lines, player) {
+        lines.push({
+            ktLamp: response.body.gameStats.ratings.ktLampRating.toFixed(2),
+            bpi: response.body.gameStats.ratings.BPI,
+            player: player.username,
+            dan: module.exports.parseDan(response.body.gameStats.classes.dan)
+        })
+    },
+    sortIidxLbLines(lines) {
+        lines.sort((a, b) => b.jubility - a.jubility);
+    },
+    formatIidxLbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.ktLamp+"").padStart(6)} | ${(line.bpi ? line.bpi.toFixed(2) : "NO ").padStart(6)}BPI ${line.dan.padStart(11)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
     }
 }
 

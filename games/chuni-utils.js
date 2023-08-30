@@ -37,5 +37,24 @@ module.exports = {
         emb.addFields(
             { name: "Difficultés", value: buffer }
         )
+    },
+    feedChuniLbLines(response, lines, player) {
+        lines.push({
+            naiverating: response.body.gameStats.ratings.naiveRating.toFixed(2),
+            player: player.username,
+            colour: `${response.body.gameStats.classes.colour}(${module.exports.parseClass(response.body.gameStats.classes.colour)})`
+        })
+    },
+    sortChuniLbLines(lines) {
+        lines.sort((a, b) => b.naiverating - a.naiverating);
+    },
+    formatChuniLbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padStart(11)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
     }
 }

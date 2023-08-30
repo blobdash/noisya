@@ -55,6 +55,25 @@ module.exports = {
         emb.addFields(
             { name: "Difficultés", value: buffer }
         )
+    },
+    feedSdvxLbLines(response, lines, player) {
+        lines.push({
+            vf: response.body.gameStats.ratings.VF6.toFixed(3),
+            player: player.username,
+            dan: module.exports.parseDan(response.body.gameStats.classes.dan)
+        })
+    },
+    sortSdvxLbLines(lines) {
+        lines.sort((a, b) => b.vf - a.vf);
+    },
+    formatSdvxLbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.vf+"").padStart(6)}VF ${line.dan.padStart(4)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
     }
 }
 
