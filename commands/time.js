@@ -50,7 +50,7 @@ module.exports = {
         }
         let time = 0;
         for(let session of sessions.body) {
-            time += session.timeEnded - session.timeStarted;
+            if(session.timeEnded - session.timeStarted > 0) time += session.timeEnded - session.timeStarted;
         }
 		await interaction.editReply({ content: `${user.username} a joué(e) a ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} pendant ${formatTime(time)}.` });
 	},
@@ -58,12 +58,10 @@ module.exports = {
 
 function formatTime(time) {
     seconds = time/1000;
-    days = Math.floor(seconds / 86400);
-    seconds -= days * 86400;
     hours = Math.floor(seconds / 3600);
     seconds -= hours * 3600;
     minutes = Math.floor(seconds / 60);
     seconds -= minutes * 60
     seconds = Math.floor(seconds);
-    return `${days} jour${days > 1 ? "s" : ""}, ${hours} heure${hours > 1 ? "s" : ""}, ${minutes} minute${minutes > 1 ? "s" : ""} et ${seconds} seconde${seconds > 1 ? "s" : ""}`;
+    return `${hours} heure${hours > 1 ? "s" : ""}, ${minutes} minute${minutes > 1 ? "s" : ""} et ${seconds} seconde${seconds > 1 ? "s" : ""}`;
 }
