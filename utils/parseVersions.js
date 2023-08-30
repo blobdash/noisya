@@ -1,4 +1,4 @@
-const jubeatsongs = require('../data/songs-jubeat.json');
+const jubeatsongs = require('../data/songs-maimai.json');
 
 
 let versions = [];

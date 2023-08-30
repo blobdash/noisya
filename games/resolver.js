@@ -1,6 +1,7 @@
 const { feedChuniLbLines, sortChuniLbLines, formatChuniSongInfo, formatChuniLbLines } = require("./chuni-utils");
 const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines } = require("./iidx-utils");
 const { feedJubeatLbLines, sortJubeatLbLines, formatJubeatSongInfo, formatJubeatLbLines } = require("./jubeat-utils");
+const { formatMaimaiSongInfo, feedMaimaiLbLines, sortMaimaiLbLines, formatMaimaiLbLines } = require("./maimai-utils");
 const { feedPopnLbLines, sortPopnLbLines, formatPopnSongInfo, formatPopnLbLines } = require("./popn-utils");
 const { feedSdvxLbLines, sortSdvxLbLines, formatSdvxSongInfo, formatSdvxLbLines } = require("./sdvx-utils");
 
@@ -22,6 +23,9 @@ module.exports = {
             case "jubeat":
                 formatJubeatSongInfo(songData, emb);
                 break;
+            case "maimai":
+                formatMaimaiSongInfo(songData, emb);
+                break;
         }
     }
     ,
@@ -41,7 +45,10 @@ module.exports = {
                 break;
             case "jubeat":
                 feedJubeatLbLines(response, lines, player);
-                break; 
+                break;
+            case "maimai":
+                feedMaimaiLbLines(response, lines, player);
+                break;
         }
     },
     resolveLineSorter(game, lines) {
@@ -60,7 +67,10 @@ module.exports = {
                 break;
             case "jubeat":
                 sortJubeatLbLines(lines);
-                break; 
+                break;
+            case "maimai":
+                sortMaimaiLbLines(lines);
+                break;
         }
     },
     resolveLineFormatter(game, lines, standing) {
@@ -75,6 +85,8 @@ module.exports = {
                 return formatChuniLbLines(lines, standing);
             case "jubeat":
                 return formatJubeatLbLines(lines, standing);
+            case "maimai":
+                return formatMaimaiLbLines(lines, standing);
         }
     }
 }

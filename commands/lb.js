@@ -16,7 +16,8 @@ module.exports = {
             .addChoices(gameTypes[1])
             .addChoices(gameTypes[2])
             .addChoices(gameTypes[3])
-            .addChoices(gameTypes[4]))
+            .addChoices(gameTypes[4])
+            .addChoices(gameTypes[5]))
         .addStringOption(option => 
             option.setName("playtype")
             .setDescription("Mode de jeu")

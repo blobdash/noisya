@@ -7,6 +7,7 @@ const { populateIidxProfile } = require('../games/iidx-utils.js');
 const { populatePopnProfile } = require('../games/popn-utils.js');
 const { populateChuniProfile } = require('../games/chuni-utils.js');
 const { populateJubeatProfile } = require('../games/jubeat-utils.js');
+const { populateMaimaiProfile } = require('../games/maimai-utils.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -20,7 +21,8 @@ module.exports = {
             .addChoices(gameTypes[1])
             .addChoices(gameTypes[2])
             .addChoices(gameTypes[3])
-            .addChoices(gameTypes[4]))
+            .addChoices(gameTypes[4])
+            .addChoices(gameTypes[5]))
         .addStringOption(option => 
             option.setName("playtype")
             .setDescription("Mode de jeu")
@@ -91,6 +93,8 @@ function populateProfile(prfl, profile, game) {
             return populateChuniProfile(prfl, profile);
         case 'jubeat':
             return populateJubeatProfile(prfl, profile);
+        case 'maimai':
+            return populateMaimaiProfile(prfl, profile);
         default:
             break;
     }

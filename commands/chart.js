@@ -7,6 +7,7 @@ const iidxsongs = require('../data/songs-iidx.json');
 const popnsongs = require('../data/songs-popn.json');
 const chunisongs = require('../data/songs-chunithm.json');
 const jubeatsongs = require('../data/songs-jubeat.json');
+const maimaisongs = require('../data/songs-maimai.json');
 const resolver = require('../games/resolver.js');
 
 module.exports = {
@@ -21,7 +22,8 @@ module.exports = {
             .addChoices(gameTypes[1])
             .addChoices(gameTypes[2])
             .addChoices(gameTypes[3])
-            .addChoices(gameTypes[4]))
+            .addChoices(gameTypes[4])
+            .addChoices(gameTypes[5]))
         .addStringOption(option =>
             option.setName("song")
             .setDescription("Chart")
@@ -97,5 +99,7 @@ function resolveGameSongslist(game) {
             return chunisongs;
         case "jubeat":
             return jubeatsongs;
+        case "maimai":
+            return maimaisongs;
     }
 }
