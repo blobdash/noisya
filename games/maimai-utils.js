@@ -34,7 +34,7 @@ module.exports = {
         const charts = songData.body.charts.sort((a, b) => b.levelNum - a.levelNum);
         let buffer = "";
         for(const chart of charts) {
-            buffer = `${buffer.length != 0 ? `${buffer}\n`: ""} ${chart.difficulty} ${chart.level}`
+            buffer = `${buffer.length != 0 ? `${buffer}\n`: ""} ${chart.difficulty} ${chart.level} ${chart.levelNum}`
         }
         emb.addFields(
             { name: "Difficultés", value: buffer }
