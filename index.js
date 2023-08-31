@@ -28,7 +28,7 @@ client.on(Events.InteractionCreate, async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.editReply({content: 'There was a server side error during the execution of your command!', ephemeral: true });
+		await interaction.editReply({content: `Une erreur s'est produite! Une équipe de Kaiden hautement entrainés sont sur le coup.`, ephemeral: true });
 	}
 });
 
