@@ -48,7 +48,7 @@ module.exports = {
             interaction.editReply("Chart introuvable.");
             return;
         }
-        resolver.resolveSongInfoFormatter(interaction.options.getString("game"), songData, emb, playtype);
+        await resolver.resolveSongInfoFormatter(interaction.options.getString("game"), songData, emb, playtype);
         interaction.editReply({ embeds: [emb] });
 	},
     async autocomplete(interaction) {
