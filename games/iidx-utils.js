@@ -76,7 +76,7 @@ module.exports = {
         })
     },
     sortIidxLbLines(lines) {
-        lines.sort((a, b) => b.jubility - a.jubility);
+        lines.sort((a, b) => b.ktLamp - a.ktLamp);
     },
     formatIidxLbLines(lines, standing) {
         buffer = "";
