@@ -15,7 +15,6 @@ module.exports = {
             await interaction.editReply({ content: "Merci de lier votre compte Tachi avec `/link`.", ephemeral: true });
             return;
         }
-        user.username = 'Sofiane';
         const api = new Tachi();
         const gameslist = await api.getUserGames(user.username);
         if(gameslist.success === false) {
