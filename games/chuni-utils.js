@@ -2,6 +2,7 @@ const { chuni_classes } = require("../constants/Classes");
 const { chuni } = require("../constants/Versions");
 const { songs } = require("../data/chuni-zetaraku.json");
 const { zetaraku_cdn } = require('../config.json');
+const { chuni_lamps } = require("../constants/Lamps");
 
 module.exports = {
     parseClass(clazz) {
@@ -15,6 +16,15 @@ module.exports = {
             { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.naiveRating.ranking}/${profile.body.rankingData.naiveRating.outOf}`}
         )
+    },
+    setChuniSongCover(title, emb) {
+        // Find the song in the zetaraku chart data.
+        zetarakuMatch = songs.find((song) => song.title === title);
+        if(zetarakuMatch === undefined) {
+            // Song was not found. No cover will be displayed.
+        } else {
+            emb.setImage(`${zetaraku_cdn}/chunithm/img/cover/${zetarakuMatch.imageName}`)
+        }
     },
     formatChuniSongInfo(songData, emb) {
         // Find the song in the zetaraku chart data.
@@ -53,6 +63,24 @@ module.exports = {
         for(const line of lines) {
             standing++;
             buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padStart(11)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
+    },
+    feedChuniClbLines(response, lines, player) {
+        lines.push({
+            score: response.body.pb.scoreData.score,
+            grade: response.body.pb.scoreData.grade,
+            clear: chuni_lamps[response.body.pb.scoreData.lamp],
+            player: player.username,
+            ranking: `#${response.body.pb.rankingData.rank}/${response.body.pb.rankingData.outOf}`
+        })
+    },
+    formatChuniClbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${line.grade.padStart(3)} ${line.clear.padStart(3)} ${(line.score+"").padStart(6)} | ${line.player}\`\n`
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;

@@ -35,4 +35,9 @@ module.exports = class Tachi {
         const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}/${playtype}/sessions?search=`);
         return await response.json();
     }
+    
+    async getScoreOnChartForPlayer(userid, game, playtype, chart) {
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}/${playtype}/pbs/${chart}`);
+        return await response.json();
+    }
 }

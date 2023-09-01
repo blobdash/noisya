@@ -1,9 +1,9 @@
-const { feedChuniLbLines, sortChuniLbLines, formatChuniSongInfo, formatChuniLbLines } = require("./chuni-utils");
-const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines } = require("./iidx-utils");
-const { feedJubeatLbLines, sortJubeatLbLines, formatJubeatSongInfo, formatJubeatLbLines } = require("./jubeat-utils");
-const { formatMaimaiSongInfo, feedMaimaiLbLines, sortMaimaiLbLines, formatMaimaiLbLines } = require("./maimai-utils");
-const { feedPopnLbLines, sortPopnLbLines, formatPopnSongInfo, formatPopnLbLines } = require("./popn-utils");
-const { feedSdvxLbLines, sortSdvxLbLines, formatSdvxSongInfo, formatSdvxLbLines } = require("./sdvx-utils");
+const { feedChuniLbLines, sortChuniLbLines, formatChuniSongInfo, formatChuniLbLines, setChuniSongCover, feedChuniClbLines, formatChuniClbLines } = require("./chuni-utils");
+const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines, feedIidxClbLines, formatIidxClbLines, formatTierlistLine } = require("./iidx-utils");
+const { feedJubeatLbLines, sortJubeatLbLines, formatJubeatSongInfo, formatJubeatLbLines, formatJubeatClbLines, feedJubeatClbLines, setJubeatSongCover } = require("./jubeat-utils");
+const { formatMaimaiSongInfo, feedMaimaiLbLines, sortMaimaiLbLines, formatMaimaiLbLines, setMaimaiSongCover, formatMaimaiClbLines, feedMaimaiClbLines } = require("./maimai-utils");
+const { feedPopnLbLines, sortPopnLbLines, formatPopnSongInfo, formatPopnLbLines, setPopnSongCover, formatPopnClbLines, feedPopnClbLines } = require("./popn-utils");
+const { feedSdvxLbLines, sortSdvxLbLines, formatSdvxSongInfo, formatSdvxLbLines, formatSdvxClbLines, feedSdvxClbLines, formatDiffTierList, setSdvxSongCover } = require("./sdvx-utils");
 
 module.exports = {
     async resolveSongInfoFormatter(game, songData, emb, playtype) {
@@ -87,6 +87,75 @@ module.exports = {
                 return formatJubeatLbLines(lines, standing);
             case "maimai":
                 return formatMaimaiLbLines(lines, standing);
+        }
+    },
+    resolveClbLineFeeder(game, response, lines, player) {
+        switch (game) {
+            case "sdvx":
+                feedSdvxClbLines(response, lines, player);
+                break;
+            case "iidx":
+                feedIidxClbLines(response, lines, player);
+                break;
+            case "popn":
+                feedPopnClbLines(response, lines, player);
+                break;
+            case "chunithm":
+                feedChuniClbLines(response, lines, player);
+                break;
+            case "jubeat":
+                feedJubeatClbLines(response, lines, player);
+                break;
+            case "maimai":
+                feedMaimaiClbLines(response, lines, player)
+                break;
+        }
+    },
+    resolveClbLineFormatter(game, lines, standing) {
+        switch (game) {
+            case "sdvx":
+                return formatSdvxClbLines(lines, standing)
+            case "iidx":
+                return formatIidxClbLines(lines, standing);
+            case "popn":
+                return formatPopnClbLines(lines, standing);
+            case "chunithm":
+                return formatChuniClbLines(lines, standing);
+            case "jubeat":
+                return formatJubeatClbLines(lines, standing);
+            case "maimai":
+                return formatMaimaiClbLines(lines, standing);
+        }
+    },
+    resolveTierList(game, chart) {
+        switch (game) {
+            case "sdvx":
+                return formatDiffTierList(chart);
+            case "iidx":
+                return formatTierlistLine(chart);
+            default:
+                return ""
+        }
+    },
+    setSongCover(game, songData, chartData, emb) {
+        switch(game) {
+            case "sdvx":
+                setSdvxSongCover(songData.id, emb);
+                break;
+            case "jubeat":
+                setJubeatSongCover(songData.title, emb);
+                break;
+            case "maimai":
+                setMaimaiSongCover(songData.title, emb);
+                break;
+            case "popn":
+                setPopnSongCover(chartData.data.inGameID, emb);
+                break;
+            case "chunithm":
+                setChuniSongCover(songData.title, emb);
+                break;
+            default:
+                break;            
         }
     }
 }

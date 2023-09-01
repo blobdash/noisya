@@ -4,6 +4,7 @@ const {distance, closest} = require('fastest-levenshtein');
 const iconv = require("iconv-lite");
 const { iidx_classes } = require("../constants/Classes");
 const { iidx } = require("../constants/Versions");
+const { iidx_lamps } = require("../constants/Lamps");
 
 const difficulty_textage = {
     "LEGGENDARIA": "X",
@@ -61,7 +62,7 @@ module.exports = {
             const textageUrl = getTextageUrl(chart, songData.body.song.title, textageTable, playtype);
             emb.addFields(
                 { name: `${chart.difficulty} ${chart.level}`, value:
-                    `${formatTierlistLine(chart)} ${textageUrl ? `\n[Textage](${textageUrl})` : ""}
+                    `${module.exports.formatTierlistLine(chart)} ${textageUrl ? `\n[Textage](${textageUrl})` : ""}
                     Max EX : ${chart.data.notecount * 2}`
                 }
             )
@@ -86,14 +87,31 @@ module.exports = {
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
-    }
-}
-
-function formatTierlistLine(chart) {
-    if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
-        return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
-    } else {
-        return "*Pas d'info tierlist*";
+    },
+    feedIidxClbLines(response, lines, player) {
+        lines.push({
+            score: response.body.pb.scoreData.score,
+            grade: response.body.pb.scoreData.grade,
+            clear: iidx_lamps[response.body.pb.scoreData.lamp],
+            player: player.username,
+            ranking: `#${response.body.pb.rankingData.rank}/${response.body.pb.rankingData.outOf}`
+        })
+    },
+    formatIidxClbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${line.grade.padStart(4)} ${line.clear.padStart(4)} ${(line.score+"").padStart(4)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
+    },
+    formatTierlistLine(chart) {
+        if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
+            return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
+        } else {
+            return "*Pas d'info tierlist*";
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 const { tachi_cdn } = require("../config.json");
+const { popn_lamps } = require("../constants/Lamps");
 
 module.exports = {
     populatePopnProfile(prfl, profile) {
@@ -9,13 +10,16 @@ module.exports = {
             { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" }
         )
     },
+    setPopnSongCover(inGameID, emb) {
+        emb.setImage(`${tachi_cdn}/misc/popn/banners/${inGameID}.png`);
+    },
     formatPopnSongInfo(songData, emb) {
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
             { name: "Genre", value: `${songData.body.song.data.genre} (${songData.body.song.data.genreEN})` },
         )
-        const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
         emb.setImage(`${tachi_cdn}/misc/popn/banners/${songData.body.charts[0].data.inGameID}.png`);
+        const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
         let buffer = "";
         for(const chart of charts) {
             buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${chart.difficulty} ${chart.level}`
@@ -39,6 +43,24 @@ module.exports = {
         for(const line of lines) {
             standing++;
             buffer += `\`#${(standing+"").padEnd(2)} ${(line.classpoints+"").padStart(6)} | ${line.class.padStart(10)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
+    },
+    feedPopnClbLines(response, lines, player) {
+        lines.push({
+            score: response.body.pb.scoreData.score,
+            grade: response.body.pb.scoreData.grade,
+            clear: popn_lamps[response.body.pb.scoreData.lamp],
+            player: player.username,
+            ranking: `#${response.body.pb.rankingData.rank}/${response.body.pb.rankingData.outOf}`
+        })
+    },
+    formatPopnClbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${line.grade.padStart(3)} ${line.clear.padStart(3)} ${(line.score+"").padStart(6)} | ${line.player}\`\n`
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;

@@ -3,6 +3,7 @@ const fs = require("fs");
 const iconv = require("iconv-lite");
 const { sdvx } = require('../constants/Versions');
 const { sdvx_cdn } = require('../config.json');
+const { sdvx_lamps } = require('../constants/Lamps');
 
 module.exports = {
     parseDan(dan) {
@@ -24,6 +25,9 @@ module.exports = {
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.VF6.ranking}/${profile.body.rankingData.VF6.outOf}`}
         )
     },
+    setSdvxSongCover(songId, emb) {
+        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songId}/EXHAUST.png?fallback=game`);
+    },
     async formatSdvxSongInfo(songData, emb) {
         // Read music_db.xml. Since it's encoded in Shift JIS, some iconv wizardry is needed.
         const musicDb = fs.readFileSync('./data/music_db.xml');
@@ -41,7 +45,7 @@ module.exports = {
             kana = mdbEntry.info.title_yomigana.charAt(0);
         }
 
-        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songData.body.song.id}/EXHAUST.png?fallback=game`)
+        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songData.body.song.id}/EXHAUST.png?fallback=game`);
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
             { name: "Kana", value: kana},
@@ -50,7 +54,7 @@ module.exports = {
         const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
         let buffer = "";
         for(const chart of charts) {
-            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${await formatDiffText(chart, songData.body.song.title)}${formatDiffTierList(chart)}`
+            buffer = `${buffer.length != 0 ? `${buffer} /`: ""} ${await formatDiffText(chart, songData.body.song.title)}${module.exports.formatDiffTierList(chart)}`
         }
         emb.addFields(
             { name: "Difficultés", value: buffer }
@@ -74,13 +78,30 @@ module.exports = {
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
+    },
+    feedSdvxClbLines(response, lines, player) {
+        lines.push({
+            score: response.body.pb.scoreData.score,
+            grade: response.body.pb.scoreData.grade,
+            clear: sdvx_lamps[response.body.pb.scoreData.lamp],
+            player: player.username,
+            ranking: `#${response.body.pb.rankingData.rank}/${response.body.pb.rankingData.outOf}`
+        })
+    },
+    formatSdvxClbLines(lines, standing) {
+        buffer = "";
+        for(const line of lines) {
+            standing++;
+            buffer += `\`#${(standing+"").padEnd(2)} ${line.grade.padStart(4)} ${line.clear.padStart(3)} ${(line.score+"").padStart(8)} | ${line.player}\`\n`
+        }
+        if(buffer.length === 0) return "Aucun joueur dans cette page!";
+        return buffer;
+    },
+    formatDiffTierList(chart) {
+        if(chart.data.clearTier) {
+            return ` (${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
+        } else return "\u200B";
     }
-}
-
-function formatDiffTierList(chart) {
-    if(chart.data.clearTier) {
-        return ` (${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
-    } else return "\u200B";
 }
 
 async function formatDiffText(chart, title) {
