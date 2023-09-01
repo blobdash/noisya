@@ -1,5 +1,8 @@
 const { tachi_cdn } = require("../config.json");
 const { popn_lamps } = require("../constants/Lamps");
+const popnsongs = require('../data/songs-popn.json');
+const popncharts = require('../data/charts-popn.json');
+const resolver = require("./resolver");
 
 module.exports = {
     populatePopnProfile(prfl, profile) {
@@ -64,5 +67,12 @@ module.exports = {
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
+    },
+    formatPopnPlayInfo(play, emb) {
+        internalChart = popncharts.find((chart) => chart.chartID === play.chartID);
+        internalSong = popnsongs.find((song) => song.id === play.songID);
+        module.exports.setPopnSongCover(internalSong.id, emb);
+        return `**${internalSong.title} - ${internalSong.artist} (${internalChart.difficulty.toUpperCase()} ${internalChart.levelNum})**
+        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
     }
 }

@@ -3,6 +3,9 @@ const { jubeat } = require("../constants/Versions");
 const { songs } = require("../data/jubeat-zetaraku.json");
 const { zetaraku_cdn } = require('../config.json');
 const { jubeat_lamps } = require("../constants/Lamps");
+const jubeatsongs = require('../data/songs-jubeat.json');
+const jubeatcharts = require('../data/charts-jubeat.json');
+const resolver = require("./resolver");
 
 module.exports = {
     parseClass(clazz) {
@@ -85,5 +88,12 @@ module.exports = {
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
+    },
+    formatJubeatPlayInfo(play, emb) {
+        internalChart = jubeatcharts.find((chart) => chart.chartID === play.chartID);
+        internalSong = jubeatsongs.find((song) => song.id === play.songID);
+        module.exports.setJubeatSongCover(internalSong.title, emb);
+        return `**${internalSong.title} - ${internalSong.artist} [${internalChart.difficulty} ${internalChart.levelNum}]**
+        ${play.scoreData.grade} / ${play.scoreData.musicRate.toFixed(2)}% / ${play.scoreData.score}`
     }
 }

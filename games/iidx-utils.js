@@ -5,6 +5,9 @@ const iconv = require("iconv-lite");
 const { iidx_classes } = require("../constants/Classes");
 const { iidx } = require("../constants/Versions");
 const { iidx_lamps } = require("../constants/Lamps");
+const iidxsongs = require('../data/songs-iidx.json');
+const iidxcharts = require('../data/charts-iidx.json');
+const resolver = require("./resolver");
 
 const difficulty_textage = {
     "LEGGENDARIA": "X",
@@ -112,6 +115,12 @@ module.exports = {
         } else {
             return "*Pas d'info tierlist*";
         }
+    },
+    formatIidxPlayInfo(play) {
+        internalChart = iidxcharts.find((chart) => chart.chartID === play.chartID);
+        internalSong = iidxsongs.find((song) => song.id === play.songID);
+        return `**${internalSong.title} - ${internalSong.artist} [${internalChart.difficulty} ${internalChart.levelNum}]**
+        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
     }
 }
 

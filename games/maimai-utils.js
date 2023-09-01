@@ -2,6 +2,9 @@ const { maimai_classes, maimai_color } = require("../constants/Classes");
 const { songs } = require("../data/maimai-zetaraku.json");
 const { zetaraku_cdn } = require('../config.json');
 const { maimai_lamps } = require("../constants/Lamps");
+const maimaisongs = require('../data/songs-maimai.json');
+const maimaicharts = require('../data/charts-maimai.json');
+const resolver = require("./resolver");
 
 module.exports = {
     parseClass(clazz) {
@@ -86,5 +89,12 @@ module.exports = {
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
+    },
+    formatMaimaiPlayInfo(play, emb) {
+        internalChart = maimaicharts.find((chart) => chart.chartID === play.chartID);
+        internalSong = maimaisongs.find((song) => song.id === play.songID);
+        module.exports.setMaimaiSongCover(internalSong.title, emb);
+        return `**${internalSong.title} - ${internalSong.artist} (${internalChart.difficulty} ${internalChart.levelNum})**
+        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.percent}%`
     }
 }

@@ -1,9 +1,9 @@
-const { feedChuniLbLines, sortChuniLbLines, formatChuniSongInfo, formatChuniLbLines, setChuniSongCover, feedChuniClbLines, formatChuniClbLines } = require("./chuni-utils");
-const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines, feedIidxClbLines, formatIidxClbLines, formatTierlistLine } = require("./iidx-utils");
-const { feedJubeatLbLines, sortJubeatLbLines, formatJubeatSongInfo, formatJubeatLbLines, formatJubeatClbLines, feedJubeatClbLines, setJubeatSongCover } = require("./jubeat-utils");
-const { formatMaimaiSongInfo, feedMaimaiLbLines, sortMaimaiLbLines, formatMaimaiLbLines, setMaimaiSongCover, formatMaimaiClbLines, feedMaimaiClbLines } = require("./maimai-utils");
-const { feedPopnLbLines, sortPopnLbLines, formatPopnSongInfo, formatPopnLbLines, setPopnSongCover, formatPopnClbLines, feedPopnClbLines } = require("./popn-utils");
-const { feedSdvxLbLines, sortSdvxLbLines, formatSdvxSongInfo, formatSdvxLbLines, formatSdvxClbLines, feedSdvxClbLines, formatDiffTierList, setSdvxSongCover } = require("./sdvx-utils");
+const { feedChuniLbLines, sortChuniLbLines, formatChuniSongInfo, formatChuniLbLines, setChuniSongCover, feedChuniClbLines, formatChuniClbLines, formatChuniPlayInfo } = require("./chuni-utils");
+const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines, feedIidxClbLines, formatIidxClbLines, formatTierlistLine, formatIidxPlayInfo } = require("./iidx-utils");
+const { feedJubeatLbLines, sortJubeatLbLines, formatJubeatSongInfo, formatJubeatLbLines, formatJubeatClbLines, feedJubeatClbLines, setJubeatSongCover, formatJubeatPlayInfo } = require("./jubeat-utils");
+const { formatMaimaiSongInfo, feedMaimaiLbLines, sortMaimaiLbLines, formatMaimaiLbLines, setMaimaiSongCover, formatMaimaiClbLines, feedMaimaiClbLines, formatMaimaiPlayInfo } = require("./maimai-utils");
+const { feedPopnLbLines, sortPopnLbLines, formatPopnSongInfo, formatPopnLbLines, setPopnSongCover, formatPopnClbLines, feedPopnClbLines, formatPopnPlayInfo } = require("./popn-utils");
+const { feedSdvxLbLines, sortSdvxLbLines, formatSdvxSongInfo, formatSdvxLbLines, formatSdvxClbLines, feedSdvxClbLines, formatDiffTierList, setSdvxSongCover, formatSdvxPlayInfo } = require("./sdvx-utils");
 
 module.exports = {
     async resolveSongInfoFormatter(game, songData, emb, playtype) {
@@ -156,6 +156,22 @@ module.exports = {
                 break;
             default:
                 break;            
+        }
+    },
+    formatPlayInfo(play, emb) {
+        switch(play.game) {
+            case "sdvx":
+                return formatSdvxPlayInfo(play, emb);
+            case "iidx":
+                return formatIidxPlayInfo(play);
+            case "popn":
+                return formatPopnPlayInfo(play, emb);
+            case "jubeat":
+                return formatJubeatPlayInfo(play, emb);
+            case "maimai":
+                return formatMaimaiPlayInfo(play, emb);
+            case "chunithm":
+                return formatChuniPlayInfo(play, emb);
         }
     }
 }

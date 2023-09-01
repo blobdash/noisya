@@ -3,6 +3,9 @@ const { chuni } = require("../constants/Versions");
 const { songs } = require("../data/chuni-zetaraku.json");
 const { zetaraku_cdn } = require('../config.json');
 const { chuni_lamps } = require("../constants/Lamps");
+const chunisongs = require('../data/songs-chunithm.json');
+const chunicharts = require('../data/charts-chunithm.json');
+const resolver = require("./resolver");
 
 module.exports = {
     parseClass(clazz) {
@@ -84,5 +87,12 @@ module.exports = {
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
+    },
+    formatChuniPlayInfo(play, emb) {
+        internalChart = chunicharts.find((chart) => chart.chartID === play.chartID);
+        internalSong = chunisongs.find((song) => song.id === play.songID);
+        module.exports.setChuniSongCover(internalSong.title, emb);
+        return `**${internalSong.title} - ${internalSong.artist} ${internalChart.difficulty} ${internalChart.levelNum}**
+        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
     }
 }

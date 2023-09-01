@@ -5,6 +5,8 @@ const { sdvx } = require('../constants/Versions');
 const { sdvx_cdn } = require('../config.json');
 const { sdvx_lamps } = require('../constants/Lamps');
 const sdvxcharts = require('../data/charts-sdvx.json');
+const sdvxsongs = require('../data/songs-sdvx.json');
+const resolver = require("./resolver");
 
 module.exports = {
     parseDan(dan) {
@@ -103,6 +105,14 @@ module.exports = {
         if(chart.data.clearTier) {
             return ` (${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
         } else return "\u200B";
+    },
+    formatSdvxPlayInfo(play, emb) {
+        internalChart = sdvxcharts.find((chart) => chart.chartID === play.chartID);
+        internalSong = sdvxsongs.find((song) => song.id === play.songID);
+        module.exports.setSdvxSongCover(internalChart.data.inGameID, emb);
+        return `**${internalSong.title} - ${internalSong.artist} [${internalChart.difficulty} ${internalChart.levelNum}]${module.exports.formatDiffTierList(internalChart)}**
+        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
+        *VF : ${play.calculatedData.VF6}*`
     }
 }
 

@@ -40,4 +40,9 @@ module.exports = class Tachi {
         const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}/${playtype}/pbs/${chart}`);
         return await response.json();
     }
+
+    async getUserGames(userid) {
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/game-stats`);
+        return await response.json();
+    }
 }
