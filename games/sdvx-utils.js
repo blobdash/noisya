@@ -4,6 +4,7 @@ const iconv = require("iconv-lite");
 const { sdvx } = require('../constants/Versions');
 const { sdvx_cdn } = require('../config.json');
 const { sdvx_lamps } = require('../constants/Lamps');
+const sdvxcharts = require('../data/charts-sdvx.json');
 
 module.exports = {
     parseDan(dan) {
@@ -35,6 +36,7 @@ module.exports = {
         const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix : "_", });
         const mDb = parser.parse(musicDbDecr);
         const mdbEntry = mDb.mdb.music.find((mdbSongEntry) => mdbSongEntry._id == songData.body.song.id)
+        const internalChart = sdvxcharts.find((item) => item.songID === songData.body.song.id);
         
         // try to fetch kana from mDb
         let kanji;
@@ -45,7 +47,7 @@ module.exports = {
             kana = mdbEntry.info.title_yomigana.charAt(0);
         }
 
-        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songData.body.song.id}/EXHAUST.png?fallback=game`);
+        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${internalChart.data.inGameID}/EXHAUST.png?fallback=game`);
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
             { name: "Kana", value: kana},
