@@ -30,7 +30,7 @@ module.exports = {
             name:"jubeat",
             value:"jubeat",
             playtypes: ['Single'],
-            lbsize: lb_pagesize
+            lbsize: lb_pagesize_small
         },
         {
             name:"maimai FiNALE",
