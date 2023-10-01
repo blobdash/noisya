@@ -21,8 +21,8 @@
   "homepage": "https://github.com/FruityEnLoops/noisya#readme",
   "dependencies": {
     "acorn": "^8.10.0",
-    "discord.js": "^14.12.1",
-    "fast-xml-parser": "^4.2.7",
+    "discord.js": "^14.13.0",
+    "fast-xml-parser": "^4.3.1",
     "fastest-levenshtein": "^1.0.16",
     "html-entities": "^2.4.0",
     "iconv-lite": "^0.6.3",
