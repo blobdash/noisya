@@ -125,6 +125,10 @@ module.exports = {
                 const matches = songslist.filter((item) =>
                     item.title.toLowerCase().includes(song) ||
                     item.searchTerms.filter((alt) => alt.toLowerCase().includes(song)).length !== 0);
+                const perfectMatch = songslist.find((item) => item.title.toLowerCase() == song);
+                if(perfectMatch) {
+                    matches.unshift(perfectMatch);
+                }
                 choices = matches.map(match => (
                     {
                         name: match.title,
