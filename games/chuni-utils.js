@@ -92,7 +92,7 @@ module.exports = {
         internalChart = chunicharts.find((chart) => chart.chartID === play.chartID);
         internalSong = chunisongs.find((song) => song.id === play.songID);
         module.exports.setChuniSongCover(internalSong.title, emb);
-        return `**${internalSong.title} - ${internalSong.artist} ${internalChart.difficulty} ${internalChart.levelNum}**
+        return `**${internalSong.artist} - ${internalSong.title} ${internalChart.difficulty} ${internalChart.levelNum}**
         ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
     }
 }

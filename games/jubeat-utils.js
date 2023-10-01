@@ -93,7 +93,7 @@ module.exports = {
         internalChart = jubeatcharts.find((chart) => chart.chartID === play.chartID);
         internalSong = jubeatsongs.find((song) => song.id === play.songID);
         module.exports.setJubeatSongCover(internalSong.title, emb);
-        return `**${internalSong.title} - ${internalSong.artist} [${internalChart.difficulty} ${internalChart.levelNum}]**
+        return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]**
         ${play.scoreData.grade} / ${play.scoreData.musicRate.toFixed(2)}% / ${play.scoreData.score}`
     }
 }
