@@ -125,9 +125,11 @@ module.exports = {
                 const matches = songslist.filter((item) =>
                     item.title.toLowerCase().includes(song) ||
                     item.searchTerms.filter((alt) => alt.toLowerCase().includes(song)).length !== 0);
-                const perfectMatch = songslist.find((item) => item.title.toLowerCase() == song);
-                if(perfectMatch) {
-                    matches.unshift(perfectMatch);
+                if(matches.length >= 25) {
+                    const perfectMatch = songslist.find((item) => item.title.toLowerCase() == song);
+                    if(perfectMatch) {
+                        matches.unshift(perfectMatch);
+                    }
                 }
                 choices = matches.map(match => (
                     {
