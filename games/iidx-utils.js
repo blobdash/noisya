@@ -32,6 +32,17 @@ const edgeCases = [ // Needed because some songs just have different names that 
     {'query': 'City Never Sleeps (IIDX Edition)', 'name': 'citynvrs'},
 ]
 
+const grades = [
+    {percentage: 8/9, prefix: "AAA"},
+    {percentage: 7/9, prefix: "AA"},
+    {percentage: 6/9, prefix: "A"},
+    {percentage: 5/9, prefix: "B"},
+    {percentage: 4/9, prefix: "C"},
+    {percentage: 3/9, prefix: "D"},
+    {percentage: 2/9, prefix: "E"},
+    {percentage: 0, prefix: "F"}
+]
+
 module.exports = {
     parseDan(dan) {
         return iidx_classes[dan];
@@ -120,8 +131,27 @@ module.exports = {
         internalChart = iidxcharts.find((chart) => chart.chartID === play.chartID);
         internalSong = iidxsongs.find((song) => song.id === play.songID);
         return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]**
-        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
+        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
+        ${getGradeDiffs(internalChart, play)}`
     }
+}
+
+function getGradeDiffs(internalChart, play) {
+    let maxEx = internalChart.data.notecount * 2;
+    if(play.scoreData.score == maxEx) return "MAX+0";
+    if(play.scoreData.score >= maxEx * (8.5/9)) return `MAX-${maxEx - play.scoreData.score}`;
+    let closestGrade = {grade:"", unsignedDiff: null};
+    for(let grade of grades) {
+        let diff = play.scoreData.score - (maxEx * grade.percentage);
+        let unsignedDiff = diff < 0 ? -diff : diff;
+        if(closestGrade.unsignedDiff == null || closestGrade.unsignedDiff > unsignedDiff) {
+            closestGrade = {
+                grade: `${grade.prefix}${diff < 0 ? "" : "+"}${Math.round(diff)}`,
+                unsignedDiff: unsignedDiff
+            }
+        }
+    }
+    return closestGrade.grade;
 }
 
 function formatDiffTierList(tier) {
