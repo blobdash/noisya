@@ -71,7 +71,7 @@ module.exports = {
     formatPopnPlayInfo(play, emb) {
         internalChart = popncharts.find((chart) => chart.chartID === play.chartID);
         internalSong = popnsongs.find((song) => song.id === play.songID);
-        module.exports.setPopnSongCover(internalSong.id, emb);
+        module.exports.setPopnSongCover(internalChart.data.inGameID, emb);
         return `**${internalSong.artist} - ${internalSong.title} (${internalChart.difficulty.toUpperCase()} ${internalChart.levelNum})**
         ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
     }
