@@ -1,4 +1,4 @@
-const { tachi_cdn } = require("../config.json");
+const { popn_cdn } = require("../config.json");
 const { popn_lamps } = require("../constants/Lamps");
 const popnsongs = require('../data/songs-popn.json');
 const popncharts = require('../data/charts-popn.json');
@@ -14,7 +14,7 @@ module.exports = {
         )
     },
     setPopnSongCover(inGameID, emb) {
-        emb.setImage(`${tachi_cdn}/misc/popn/banners/${inGameID}.png`);
+        emb.setImage(`${popn_cdn}/${inGameID}.png`);
     },
     formatPopnSongInfo(songData, emb) {
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
