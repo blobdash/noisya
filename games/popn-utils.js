@@ -19,7 +19,7 @@ module.exports = {
     formatPopnSongInfo(songData, emb) {
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
-            { name: "Genre", value: `${songData.body.song.data.genre} (${songData.body.song.data.genreEN})` },
+            { name: "Genre", value: `${songData.body.song.data.genre} ${songData.body.song.data.genreEN ? `(${songData.body.song.data.genreEN})` : ''}` },
         )
         emb.setImage(`${popn_cdn}/${songData.body.charts[0].data.inGameID}.png`);
         const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
