@@ -21,7 +21,7 @@ module.exports = {
         emb.addFields(
             { name: "Genre", value: `${songData.body.song.data.genre} (${songData.body.song.data.genreEN})` },
         )
-        emb.setImage(`${tachi_cdn}/misc/popn/banners/${songData.body.charts[0].data.inGameID}.png`);
+        emb.setImage(`${popn_cdn}/${songData.body.charts[0].data.inGameID}.png`);
         const charts = songData.body.charts.sort((a,b) => a.levelNum - b.levelNum);
         let buffer = "";
         for(const chart of charts) {
