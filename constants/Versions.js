@@ -40,7 +40,8 @@ module.exports = {
         "27": "HEROIC VERSE",
         "28": "BISTROVER",
         "29": "CastHour",
-        "30": "Resident",
+        "30": "RESIDENT",
+        "31": "EPOLIS"
     },
     chuni: {
         "chuni": "CHUNITHM",
@@ -58,7 +59,8 @@ module.exports = {
         "new": "NEW",
         "newplus": "NEW PLUS",
         "sun": "SUN",
-        "sunplus": "SUN PLUS"
+        "sunplus": "SUN PLUS",
+        "luminous": "LUMINOUS"
     },
     jubeat: {
         "jubeat": "jubeat",
