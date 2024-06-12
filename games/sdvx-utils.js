@@ -6,9 +6,19 @@ const { sdvx_cdn } = require('../config.json');
 const { sdvx_lamps } = require('../constants/Lamps');
 const sdvxcharts = require('../data/charts-sdvx.json');
 const sdvxsongs = require('../data/songs-sdvx.json');
-const resolver = require("./resolver");
 
 module.exports = {
+    diffMapper: {
+        "NOV": "NOVICE",
+        "ADV": "ADVANCED",
+        "EXH": "EXHAUST",
+        "MXM": "MAXIMUM",
+        "INF": "INFINITE",
+        "GRV": "GRAVITY",
+        "HVN": "HEAVENLY",
+        "VVD": "VIVID",
+        "XCD": "EXCEED"
+    },
     parseDan(dan) {
         if(dan === undefined) return 'n/a';
         if(dan.startsWith('DAN_')) {
@@ -28,8 +38,8 @@ module.exports = {
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.VF6.ranking}/${profile.body.rankingData.VF6.outOf}`}
         )
     },
-    setSdvxSongCover(songId, emb) {
-        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songId}/EXHAUST.png?fallback=game`);
+    setSdvxSongCover(songId, diff, emb) {
+        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songId}/${diffMapper[diff]}.png?fallback=game&size=big`);
     },
     async formatSdvxSongInfo(songData, emb) {
         // Read music_db.xml. Since it's encoded in Shift JIS, some iconv wizardry is needed.
@@ -49,7 +59,7 @@ module.exports = {
             kana = mdbEntry.info.title_yomigana.charAt(0);
         }
 
-        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${internalChart.data.inGameID}/EXHAUST.png?fallback=game`);
+        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${internalChart.data.inGameID}/EXHAUST.png?fallback=game&size=big`);
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
             { name: "Kana", value: kana},
@@ -109,7 +119,7 @@ module.exports = {
     formatSdvxPlayInfo(play, emb) {
         internalChart = sdvxcharts.find((chart) => chart.chartID === play.chartID);
         internalSong = sdvxsongs.find((song) => song.id === play.songID);
-        module.exports.setSdvxSongCover(internalChart.data.inGameID, emb);
+        module.exports.setSdvxSongCover(internalChart.data.inGameID, internalChart.difficulty, emb);
         return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]${module.exports.formatDiffTierList(internalChart)}**
         ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
         *VF : ${play.calculatedData.VF6}*`
