@@ -39,7 +39,7 @@ module.exports = {
         )
     },
     setSdvxSongCover(songId, diff, emb) {
-        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songId}/${diffMapper[diff]}.png?fallback=game&size=big`);
+        emb.setImage(`${sdvx_cdn}/api/games/sdvx/musics/${songId}/${module.exports.diffMapper[diff]}.png?fallback=game&size=big`);
     },
     async formatSdvxSongInfo(songData, emb) {
         // Read music_db.xml. Since it's encoded in Shift JIS, some iconv wizardry is needed.
