@@ -140,7 +140,7 @@ module.exports = {
     setSongCover(game, songData, chartData, emb) {
         switch(game) {
             case "sdvx":
-                setSdvxSongCover(chartData.data.inGameID, emb);
+                setSdvxSongCover(chartData.data.inGameID, chartData.difficulty, emb);
                 break;
             case "jubeat":
                 setJubeatSongCover(songData.title, emb);
