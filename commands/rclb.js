@@ -1,6 +1,6 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const Tachi = require('../utils/Tachi');
-const { getUserList } = require('../utils/db');
+const { getLink, getUserList } = require('../utils/db');
 const { gameTypes } = require('../constants/Games');
 const resolver = require('../games/resolver');
 const { lb_pagesize_small } = require('../config.json');
