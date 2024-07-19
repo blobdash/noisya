@@ -64,7 +64,7 @@ module.exports = {
             { name: "Genre", value: songData.body.song.data.genre },
             { name: "Version", value: iidx[songData.body.song.data.displayVersion] }
         )
-        emb.setImage(`${iidx_cdn}/${songData.body.charts[0].data.inGameID}.gif`);
+        emb.setImage(`${iidx_cdn}/${songData.body.charts[0].data.inGameID + "".padStart(5, "0")}.gif`);
         
         // init textage db
         const url = "https://textage.cc/score/titletbl.js";
@@ -138,7 +138,7 @@ module.exports = {
         ${getGradeDiffs(internalChart, play)}`
     },
     setIidxSongCover(inGameID, emb) {
-        emb.setImage(`${iidx_cdn}/${inGameID}.gif`);
+        emb.setImage(`${iidx_cdn}/${inGameID + "".padStart(5, "0")}.gif`);
     },
 }
 
