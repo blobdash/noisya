@@ -8,6 +8,7 @@ const { iidx_lamps } = require("../constants/Lamps");
 const iidxsongs = require('../data/songs-iidx.json');
 const iidxcharts = require('../data/charts-iidx.json');
 const resolver = require("./resolver");
+const { iidx_cdn } = require('../config.json');
 
 const difficulty_textage = {
     "LEGGENDARIA": "X",
@@ -63,6 +64,7 @@ module.exports = {
             { name: "Genre", value: songData.body.song.data.genre },
             { name: "Version", value: iidx[songData.body.song.data.displayVersion] }
         )
+        emb.setImage(`${iidx_cdn}/${songData.body.charts[0].data.inGameID}.gif`);
         
         // init textage db
         const url = "https://textage.cc/score/titletbl.js";
@@ -127,13 +129,17 @@ module.exports = {
             return "*Pas d'info tierlist*";
         }
     },
-    formatIidxPlayInfo(play) {
+    formatIidxPlayInfo(play, emb) {
         internalChart = iidxcharts.find((chart) => chart.chartID === play.chartID);
         internalSong = iidxsongs.find((song) => song.id === play.songID);
+        module.exports.setIidxSongCover(internalChart.data.inGameID, emb);
         return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]**
         ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
         ${getGradeDiffs(internalChart, play)}`
-    }
+    },
+    setIidxSongCover(inGameID, emb) {
+        emb.setImage(`${iidx_cdn}/${inGameID}.png`);
+    },
 }
 
 function getGradeDiffs(internalChart, play) {

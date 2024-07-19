@@ -1,5 +1,5 @@
 const { feedChuniLbLines, sortChuniLbLines, formatChuniSongInfo, formatChuniLbLines, setChuniSongCover, feedChuniClbLines, formatChuniClbLines, formatChuniPlayInfo } = require("./chuni-utils");
-const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines, feedIidxClbLines, formatIidxClbLines, formatTierlistLine, formatIidxPlayInfo } = require("./iidx-utils");
+const { feedIidxLbLines, sortIidxLbLines, formatIidxSongInfo, formatIidxLbLines, feedIidxClbLines, formatIidxClbLines, formatTierlistLine, formatIidxPlayInfo, setIidxSongCover } = require("./iidx-utils");
 const { feedJubeatLbLines, sortJubeatLbLines, formatJubeatSongInfo, formatJubeatLbLines, formatJubeatClbLines, feedJubeatClbLines, setJubeatSongCover, formatJubeatPlayInfo } = require("./jubeat-utils");
 const { formatMaimaiSongInfo, feedMaimaiLbLines, sortMaimaiLbLines, formatMaimaiLbLines, setMaimaiSongCover, formatMaimaiClbLines, feedMaimaiClbLines, formatMaimaiPlayInfo } = require("./maimai-utils");
 const { feedPopnLbLines, sortPopnLbLines, formatPopnSongInfo, formatPopnLbLines, setPopnSongCover, formatPopnClbLines, feedPopnClbLines, formatPopnPlayInfo } = require("./popn-utils");
@@ -154,6 +154,8 @@ module.exports = {
             case "chunithm":
                 setChuniSongCover(songData.title, emb);
                 break;
+            case "iidx":
+                setIidxSongCover(chartData.data.inGameID, emb);
             default:
                 break;            
         }
@@ -163,7 +165,7 @@ module.exports = {
             case "sdvx":
                 return formatSdvxPlayInfo(play, emb);
             case "iidx":
-                return formatIidxPlayInfo(play);
+                return formatIidxPlayInfo(play, emb);
             case "popn":
                 return formatPopnPlayInfo(play, emb);
             case "jubeat":
