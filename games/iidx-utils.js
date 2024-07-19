@@ -138,7 +138,7 @@ module.exports = {
         ${getGradeDiffs(internalChart, play)}`
     },
     setIidxSongCover(inGameID, emb) {
-        emb.setImage(`${iidx_cdn}/${inGameID}.png`);
+        emb.setImage(`${iidx_cdn}/${inGameID}.gif`);
     },
 }
 
