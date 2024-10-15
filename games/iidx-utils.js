@@ -133,8 +133,11 @@ module.exports = {
         internalChart = iidxcharts.find((chart) => chart.chartID === play.chartID);
         internalSong = iidxsongs.find((song) => song.id === play.songID);
         module.exports.setIidxSongCover(internalChart.data.inGameID, emb);
+        let bp = play.scoreData.optional.bp ? play.scoreData.optional.bp + "BP" : null
+        let cb = play.scoreData.optional.cb ? play.scoreData.optional.cb + "CB" : null
         return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]**
         ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
+        ${bp ? cb ? bp + " / " + cb : bp : ""}
         ${getGradeDiffs(internalChart, play)}`
     },
     setIidxSongCover(inGameID, emb) {
