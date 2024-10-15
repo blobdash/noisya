@@ -80,7 +80,7 @@ module.exports = {
                 }
             } catch(err) {
                 await interaction.editReply({ content: "Erreur de récupération des leaderboards côté Tachi.", ephemeral: true });
-                console.err(err);
+                console.error(err);
                 return;
             }
         }
