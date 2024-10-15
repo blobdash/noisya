@@ -121,8 +121,9 @@ module.exports = {
         internalSong = sdvxsongs.find((song) => song.id === play.songID);
         module.exports.setSdvxSongCover(internalChart.data.inGameID, internalChart.difficulty, emb);
         return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]${module.exports.formatDiffTierList(internalChart)}**
-        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
-        *VF : ${play.calculatedData.VF6}*`
+        ${play.scoreData.grade} / ${play.scoreData.lamp} ${play.scoreData.optional.gauge ? "(" + play.scoreData.optional.gauge + "%)" : ""} / ${play.scoreData.score} 
+        *VF : ${play.calculatedData.VF6}*
+        ${play.scoreData.judgements.critical} / ${play.scoreData.judgements.near} / ${play.scoreData.judgements.miss}`
     }
 }
 
