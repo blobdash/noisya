@@ -40,10 +40,16 @@ module.exports = {
             playtype = gameTypes.find((gameobj) => gameobj.value === game).playtypes[0];
         }
         for(const player of players) {
-            const response = await api.getPlayerProfile(player.username, game, playtype);
-            if(response.success === true) { // ignore invalid users
-                // feed lines object with correct game objects
-                resolver.resolveLineFeeder(game, response, lines, player);
+            try {
+                const response = await api.getPlayerProfile(player.username, game, playtype);
+                if(response.success === true) { // ignore invalid users
+                    // feed lines object with correct game objects
+                    resolver.resolveLineFeeder(game, response, lines, player);
+                }
+            } catch(err) {
+                await interaction.editReply({ content: "Erreur de récupération des leaderboards côté Tachi.", ephemeral: true });
+                console.err(err);
+                return;
             }
         }
         resolver.resolveLineSorter(game, lines)

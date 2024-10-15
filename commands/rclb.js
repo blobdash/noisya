@@ -72,10 +72,16 @@ module.exports = {
         playtype = lastplay.playtype;
 
         for(const player of players) {
-            const response = await api.getScoreOnChartForPlayer(player.username, game, playtype, chart);
-            if(response.success === true) { // ignore invalid users
-                // feed lines object with correct game objects
-                resolver.resolveClbLineFeeder(game, response, lines, player);
+            try {
+                const response = await api.getScoreOnChartForPlayer(player.username, game, playtype, chart);
+                if(response.success === true) { // ignore invalid users
+                    // feed lines object with correct game objects
+                    resolver.resolveClbLineFeeder(game, response, lines, player);
+                }
+            } catch(err) {
+                await interaction.editReply({ content: "Erreur de récupération des leaderboards côté Tachi.", ephemeral: true });
+                console.err(err);
+                return;
             }
         }
         lines.sort((a, b) => b.score - a.score);
