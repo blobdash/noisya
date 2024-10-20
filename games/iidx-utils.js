@@ -135,7 +135,7 @@ module.exports = {
         module.exports.setIidxSongCover(internalChart.data.inGameID, emb);
         let bp = play.scoreData.optional.bp ? play.scoreData.optional.bp + "BP" : null
         let cb = play.scoreData.optional.comboBreak ? play.scoreData.optional.comboBreak + "CB" : null
-        return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}]**
+        return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}] ${module.exports.formatTierlistLine(internalChart)}**
         ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
         ${bp ? cb ? bp + " / " + cb : bp : ""}
         ${getGradeDiffs(internalChart, play)}`
