@@ -43,6 +43,7 @@ module.exports = {
         "30": "RESIDENT",
         "31": "EPOLIS",
         "32": "Pinky Crush",
+        "inf2020": "Infinitas",
         default: "Removed"
     },
     chuni: {
