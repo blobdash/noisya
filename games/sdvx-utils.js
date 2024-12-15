@@ -113,7 +113,14 @@ module.exports = {
     },
     formatDiffTierList(chart) {
         if(chart.data.clearTier) {
-            return ` (${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""})`
+            const clearTier = `${chart.data.clearTier.text}${chart.data.clearTier.individualDifference ? " ⚖️" : ""}`;
+            if(chart.data.sTier) {
+                return ` (${clearTier}, S ${chart.data.sTier.text})`
+            } else {
+                return ` (${clearTier})`
+            }
+        } else if(chart.data.sTier) {
+            return ` (S ${chart.data.sTier.text})`;
         } else return "\u200B";
     },
     formatSdvxPlayInfo(play, emb) {
