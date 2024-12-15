@@ -41,7 +41,9 @@ module.exports = {
         "28": "BISTROVER",
         "29": "CastHour",
         "30": "RESIDENT",
-        "31": "EPOLIS"
+        "31": "EPOLIS",
+        "32": "Pinky Crush",
+        default: "Removed"
     },
     chuni: {
         "chuni": "CHUNITHM",
