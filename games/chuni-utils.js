@@ -1,4 +1,4 @@
-const { chuni_classes } = require("../constants/Classes");
+const { chuni_classes, chuni_classes_padded } = require("../constants/Classes");
 const { chuni } = require("../constants/Versions");
 const { songs } = require("../data/chuni-zetaraku.json");
 const { zetaraku_cdn } = require('../config.json');
@@ -10,6 +10,9 @@ const resolver = require("./resolver");
 module.exports = {
     parseClass(clazz) {
         return chuni_classes[clazz];
+    },
+    parseClassPadded(clazz) {
+        return chuni_classes_padded[clazz]; // Why did I do a manually padded version? Because padEnd() sucks. Try "🌫️".padEnd(3) and you'll understand why.
     },
     populateChuniProfile(prfl, profile) {
         prfl.addFields(
@@ -55,7 +58,7 @@ module.exports = {
         lines.push({
             naiverating: response.body.gameStats.ratings.naiveRating.toFixed(2),
             player: player.username,
-            colour: `${module.exports.parseClass(response.body.gameStats.classes.colour)}`
+            colour: `${module.exports.parseClassPadded(response.body.gameStats.classes.colour)}`
         })
     },
     sortChuniLbLines(lines) {
@@ -65,7 +68,7 @@ module.exports = {
         buffer = "";
         for(const line of lines) {
             standing++;
-            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padEnd(7)} | ${line.player}\`\n`
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour} | ${line.player}\`\n`
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;

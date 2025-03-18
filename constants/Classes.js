@@ -40,6 +40,25 @@ module.exports = {
         "RAINBOW_EX_III": "🌈EX★★★",
         undefined: "-"
     },
+    chuni_classes_padded: {
+        "BLUE": "🟦  ",
+        "GREEN": "🟩  ",
+        "ORANGE": "🟧     ",
+        "RED": "🟥     ",
+        "PURPLE": "🟪     ",
+        "COPPER": "🟫     ",
+        "SILVER": "🌫️     ",
+        "GOLD": "🟨     ",
+        "PLATINUM": "⬜     ",
+        "RAINBOW": "🌈★    ",
+        "RAINBOW_II": "🌈★★   ",
+        "RAINBOW_III": "🌈★★★  ",
+        "RAINBOW_IV": "🌈★★★★ ",
+        "RAINBOW_EX_I": "🌈EX★  ",
+        "RAINBOW_EX_II": "🌈EX★★ ",
+        "RAINBOW_EX_III": "🌈EX★★★",
+        undefined: "-"
+    },
     jubeat_classes: {
         "BLACK": "Black",
         "YELLOW_GREEN": "Yel-Gre",
