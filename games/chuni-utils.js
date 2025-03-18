@@ -14,7 +14,7 @@ module.exports = {
     populateChuniProfile(prfl, profile) {
         prfl.addFields(
             { name: "Naive Rating", value: profile.body.gameStats.ratings.naiveRating.toFixed(2) },
-            { name: "Couleur", value: `${profile.body.gameStats.classes.colour}(${module.exports.parseClass(profile.body.gameStats.classes.colour)})` },
+            { name: "Couleur", value: `${module.exports.parseClass(profile.body.gameStats.classes.colour)}` },
             { name: "Playcount", value: profile.body.totalScores+"" },
             { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
             { name: "Rang sur Tachi", value: `#${profile.body.rankingData.naiveRating.ranking}/${profile.body.rankingData.naiveRating.outOf}`}
@@ -55,7 +55,7 @@ module.exports = {
         lines.push({
             naiverating: response.body.gameStats.ratings.naiveRating.toFixed(2),
             player: player.username,
-            colour: `${response.body.gameStats.classes.colour}(${module.exports.parseClass(response.body.gameStats.classes.colour)})`
+            colour: `${module.exports.parseClass(response.body.gameStats.classes.colour)}`
         })
     },
     sortChuniLbLines(lines) {
@@ -65,7 +65,7 @@ module.exports = {
         buffer = "";
         for(const line of lines) {
             standing++;
-            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padStart(11)} | ${line.player}\`\n`
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padStart(6)} | ${line.player}\`\n`
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
