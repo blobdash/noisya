@@ -65,7 +65,7 @@ module.exports = {
         buffer = "";
         for(const line of lines) {
             standing++;
-            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padStart(6)} | ${line.player}\`\n`
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padEnd(7)} | ${line.player}\`\n`
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
