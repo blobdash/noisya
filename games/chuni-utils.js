@@ -11,9 +11,6 @@ module.exports = {
     parseClass(clazz) {
         return chuni_classes[clazz];
     },
-    parseClassPadded(clazz) {
-        return chuni_classes_padded[clazz]; // Why did I do a manually padded version? Because padEnd() sucks. Try "🌫️".padEnd(3) and you'll understand why.
-    },
     populateChuniProfile(prfl, profile) {
         prfl.addFields(
             { name: "Naive Rating", value: profile.body.gameStats.ratings.naiveRating.toFixed(2) },
@@ -58,7 +55,7 @@ module.exports = {
         lines.push({
             naiverating: response.body.gameStats.ratings.naiveRating.toFixed(2),
             player: player.username,
-            colour: `${module.exports.parseClassPadded(response.body.gameStats.classes.colour)}`
+            colour: `${module.exports.parseClass(response.body.gameStats.classes.colour)}`
         })
     },
     sortChuniLbLines(lines) {
@@ -68,7 +65,7 @@ module.exports = {
         buffer = "";
         for(const line of lines) {
             standing++;
-            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour} | ${line.player}\`\n`
+            buffer += `\`#${(standing+"").padEnd(2)} ${(line.naiverating+"").padStart(6)} | ${line.colour.padEnd(4)} | ${line.player}\`\n`
         }
         if(buffer.length === 0) return "Aucun joueur dans cette page!";
         return buffer;
