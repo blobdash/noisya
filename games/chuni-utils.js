@@ -34,13 +34,7 @@ module.exports = {
         }
     },
     formatChuniSongInfo(songData, emb) {
-        // Find the song in the zetaraku chart data.
-        zetarakuMatch = songs.find((song) => song.title === songData.body.song.title);
-        if(zetarakuMatch === undefined) {
-            // Song was not found. No cover will be displayed.
-        } else {
-            emb.setImage(`${zetaraku_cdn}/chunithm/img/cover/${zetarakuMatch.imageName}`)
-        }
+        module.exports.setChuniSongCover(songData.body.song.title, emb);
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
             { name: "Catégorie", value: songData.body.song.data.genre },
