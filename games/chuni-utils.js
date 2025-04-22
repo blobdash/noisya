@@ -37,8 +37,8 @@ module.exports = {
         module.exports.setChuniSongCover(songData.body.song.title, emb);
         emb.setTitle(`${songData.body.song.artist} - ${songData.body.song.title}`);
         emb.addFields(
-            { name: "Catégorie", value: songData.body.song.data.genre },
-            { name: "Version", value: chuni[songData.body.song.data.displayVersion] }
+            { name: "Catégorie", value: `${songData.body.song.data.genre}` },
+            { name: "Version", value: `${chuni[songData.body.song.data.displayVersion]}` }
         )
         const charts = songData.body.charts.sort((a, b) => b.levelNum - a.levelNum);
         let buffer = "";
