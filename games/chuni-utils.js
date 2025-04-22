@@ -21,6 +21,10 @@ module.exports = {
         )
     },
     setChuniSongCover(title, emb) {
+        if(title === 'Synthesis.') {
+            emb.setImage(`https://i.imgur.com/rNYBg1M.png`);
+            return;
+        }
         // Find the song in the zetaraku chart data.
         zetarakuMatch = songs.find((song) => song.title === title);
         if(zetarakuMatch === undefined) {
