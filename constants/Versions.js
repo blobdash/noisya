@@ -63,7 +63,10 @@ module.exports = {
         "newplus": "NEW PLUS",
         "sun": "SUN",
         "sunplus": "SUN PLUS",
-        "luminous": "LUMINOUS"
+        "luminous": "LUMINOUS",
+        "luminousplus": "LUMINOUS PLUS",
+        "verse": "VERSE",
+        "verseplus": "VERSE PLUS"
     },
     jubeat: {
         "jubeat": "jubeat",
