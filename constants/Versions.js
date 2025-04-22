@@ -65,7 +65,7 @@ module.exports = {
         "sunplus": "SUN PLUS",
         "luminous": "LUMINOUS",
         "luminousplus": "LUMINOUS PLUS",
-        "verse": "VERSE",
+        "CHUNITHM VERSE": "VERSE",
         "verseplus": "VERSE PLUS"
     },
     jubeat: {
