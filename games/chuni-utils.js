@@ -92,7 +92,7 @@ module.exports = {
         module.exports.setChuniSongCover(internalSong.title, emb);
         return `**${internalSong.artist} - ${internalSong.title} ${internalChart.difficulty} ${internalChart.levelNum}**
         ${play.scoreData.grade} / ${formatTraditionalClear(play)} / ${play.scoreData.score}
-        ${play.judgements.jcrit}-${play.judgements.justice}-${play.judgements.attack}-${play.judgements.miss}`
+        ${play.scoreData.judgements.jcrit}-${play.scoreData.judgements.justice}-${play.scoreData.judgements.attack}-${play.scoreData.judgements.miss}`
     }
 }
 
