@@ -3,6 +3,7 @@ module.exports = {
         "FAILED": "F",
         "CLEAR": "C",
         "EXCESSIVE CLEAR": "HC",
+        "MAXXIVE CLEAR": "MC",
         "ULTIMATE CHAIN": "UC",
         "PERFECT ULTIMATE CHAIN": "PUC",
     },
