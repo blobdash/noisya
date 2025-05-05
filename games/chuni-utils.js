@@ -72,7 +72,7 @@ module.exports = {
         lines.push({
             score: response.body.pb.scoreData.score,
             grade: response.body.pb.scoreData.grade,
-            clear: chuni_lamps[response.body.pb.scoreData.lamp],
+            clear: chuni_lamps[response.body.pb.scoreData.noteLamp],
             player: player.username,
             ranking: `#${response.body.pb.rankingData.rank}/${response.body.pb.rankingData.outOf}`
         })
@@ -91,6 +91,7 @@ module.exports = {
         internalSong = chunisongs.find((song) => song.id === play.songID);
         module.exports.setChuniSongCover(internalSong.title, emb);
         return `**${internalSong.artist} - ${internalSong.title} ${internalChart.difficulty} ${internalChart.levelNum}**
-        ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}`
+        ${play.scoreData.grade} / ${play.scoreData.noteLamp} / ${play.scoreData.score}
+        ${play.judgements.jcrit}-${play.judgements.justice}-${play.judgements.attack}-${play.judgements.miss}`
     }
 }
