@@ -1,1 +1,1 @@
-CREATE TABLE IF NOT EXISTS users(userid varchar PRIMARY KEY, username varchar);
+CREATE TABLE IF NOT EXISTS users(userid varchar PRIMARY KEY, username varchar, hidden integer);
