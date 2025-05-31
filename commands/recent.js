@@ -39,7 +39,7 @@ module.exports = {
         const recent = new EmbedBuilder();
         recent.setTitle(`${user.username} - Recent`);
         recent.addFields(
-            { name: `${gameTypes.find((game) => game.value === lastplay.game).name} - ${lastplay.playtype}`, value: `${resolver.formatPlayInfo(lastplay, recent)}` }
+            { name: `${gameTypes.find((game) => game.value === lastplay.game).emoji} ${gameTypes.find((game) => game.value === lastplay.game).name} - ${lastplay.playtype}`, value: `${resolver.formatPlayInfo(lastplay, recent)}` }
         )
 		await interaction.editReply({ embeds: [recent] });
 	},

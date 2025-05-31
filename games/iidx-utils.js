@@ -126,7 +126,7 @@ module.exports = {
         if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
             return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
         } else {
-            return "*Pas d'info tierlist*";
+            return "";
         }
     },
     formatIidxPlayInfo(play, emb) {

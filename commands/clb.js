@@ -66,11 +66,12 @@ module.exports = {
         let chart = interaction.options.getString("diff");
         const chartslist = resolveGameChartslist(game);
         let chartFromDb = chartslist.find((item) => item.chartID == chart);
+        const gameType = gameTypes.find((a) => a.value === game);
 
         playtype = interaction.options.getString("playtype");
         if(playtype === null){
             // playtype isn't specified : use first in array as default.
-            playtype = gameTypes.find((gameobj) => gameobj.value === game).playtypes[0];
+            playtype = gameType.playtypes[0];
         }
 
         if(chartFromDb.playtype !== playtype) {
@@ -104,7 +105,7 @@ module.exports = {
         lines = lines.slice((page - 1) * pagesize, page * pagesize);
         const lb = new EmbedBuilder();
         resolver.setSongCover(game, songFromDb, chartFromDb, lb);
-        lb.setTitle(`${songFromDb.artist} - ${songFromDb.title} [${chartFromDb.difficulty} ${chartFromDb.levelNum}] ${resolver.resolveTierList(game, chartFromDb)} - ${playtype}`);
+        lb.setTitle(`${gameType.emoji} ${songFromDb.artist} - ${songFromDb.title} [${chartFromDb.difficulty} ${chartFromDb.levelNum}] ${resolver.resolveTierList(game, chartFromDb)}`);
         lb.addFields({name: `Classement (Page ${page})`, value: resolver.resolveClbLineFormatter(game, lines, (page - 1) * pagesize)});
         await interaction.editReply({ embeds: [lb] });
 	},

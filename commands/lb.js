@@ -34,10 +34,11 @@ module.exports = {
         const players = await getUserList();
         let lines = [];
         const game = interaction.options.getString("game");
+        const gameType = gameTypes.find((a) => a.value === game);
         playtype = interaction.options.getString("playtype");
         if(playtype === null){
             // playtype isn't specified : use first in array as default.
-            playtype = gameTypes.find((gameobj) => gameobj.value === game).playtypes[0];
+            playtype = gameType.playtypes[0];
         }
         for(const player of players) {
             try {
@@ -55,11 +56,11 @@ module.exports = {
         resolver.resolveLineSorter(game, lines)
         // paginate
         let page = interaction.options.getInteger("page");
-        const pagesize = gameTypes.find((gameobj) => gameobj.value === game).lbsize;
+        const pagesize = gameType.lbsize;
         if(page === null) page = 1;
         lines = lines.slice((page - 1) * pagesize, page * pagesize);
         const lb = new EmbedBuilder();
-        lb.setTitle(`${gameTypes.find((gameobj) => gameobj.value === game).name} (${playtype})`);
+        lb.setTitle(`${gameType.emoji} ${gameType.name} (${playtype})`);
         lb.addFields({name: `Classement (Page ${page})`, value: resolver.resolveLineFormatter(game, lines, (page - 1) * pagesize)});
         await interaction.editReply({ embeds: [lb] });
 	},

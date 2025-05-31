@@ -36,10 +36,11 @@ module.exports = {
             .setAutocomplete(true)),
 	async execute(interaction) {
 		await interaction.deferReply();
+        const gameType = gameTypes.find((a) => a.value === interaction.options.getString("game"));
         playtype = interaction.options.getString("playtype");
         if(playtype === null){
             // playtype isn't specified : use first in array as default.
-            playtype = gameTypes.find((game) => game.value === interaction.options.getString("game")).playtypes[0];
+            playtype = gameType.playtypes[0];
         }
         let emb = new EmbedBuilder();
         const api = new Tachi();

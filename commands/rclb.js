@@ -62,6 +62,7 @@ module.exports = {
         }
 
         const game = lastplay.game;
+        const gameType = gameTypes.find((a) => a.value === game);
         const song = lastplay.songID;
         const songslist = resolveGameSongslist(game);
         const songFromDb = songslist.find((item) => item.id == song);
@@ -92,7 +93,7 @@ module.exports = {
         lines = lines.slice((page - 1) * pagesize, page * pagesize);
         const lb = new EmbedBuilder();
         resolver.setSongCover(game, songFromDb, chartFromDb, lb);
-        lb.setTitle(`${songFromDb.artist} - ${songFromDb.title} [${chartFromDb.difficulty} ${chartFromDb.levelNum}]${resolver.resolveTierList(game, chartFromDb)} - ${playtype}`);
+        lb.setTitle(`${gameType.emoji} ${songFromDb.artist} - ${songFromDb.title} [${chartFromDb.difficulty} ${chartFromDb.levelNum}]${resolver.resolveTierList(game, chartFromDb)} - ${playtype}`);
         lb.addFields({name: `Classement (Page ${page})`, value: resolver.resolveClbLineFormatter(game, lines, (page - 1) * pagesize)});
         await interaction.editReply({ embeds: [lb] });
 	},
