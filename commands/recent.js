@@ -41,7 +41,7 @@ module.exports = {
         recent.addFields(
             { name: `${gameTypes.find((game) => game.value === lastplay.game).name} - ${lastplay.playtype}`, value: `${resolver.formatPlayInfo(lastplay, recent)}` }
         )
-        lb.setFooter({ text: `${gameTypes.find((game) => game.value === lastplay.game).name}`, iconURL: `${gameTypes.find((game) => game.value === lastplay.game).icon}`});
+        recent.setFooter({ text: `${gameTypes.find((game) => game.value === lastplay.game).name}`, iconURL: `${gameTypes.find((game) => game.value === lastplay.game).icon}`});
 		await interaction.editReply({ embeds: [recent] });
 	},
 };
