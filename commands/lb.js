@@ -60,8 +60,9 @@ module.exports = {
         if(page === null) page = 1;
         lines = lines.slice((page - 1) * pagesize, page * pagesize);
         const lb = new EmbedBuilder();
-        lb.setTitle(`${gameType.emoji} ${gameType.name} (${playtype})`);
+        lb.setTitle(`${gameType.name} (${playtype})`);
         lb.addFields({name: `Classement (Page ${page})`, value: resolver.resolveLineFormatter(game, lines, (page - 1) * pagesize)});
+        lb.setFooter({ text: `${gameType.name}`, iconURL: `${gameType.icon}`});
         await interaction.editReply({ embeds: [lb] });
 	},
     async autocomplete(interaction) {

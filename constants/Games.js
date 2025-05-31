@@ -5,42 +5,42 @@ module.exports = {
         {
             name:"SOUND VOLTEX",
             value:"sdvx",
-            emoji: "<:sdvxlogo:1378360858253590578>",
+            icon: "https://i.imgur.com/k9tLrjP.png",
             playtypes: ['Single'],
             lbsize: lb_pagesize
         },
         {
             name:"beatmania IIDX",
             value:"iidx",
-            emoji: "<:iidxlogo:1378351557376086076>",
+            icon: "https://i.imgur.com/edxL1Nr.png",
             playtypes: ['SP', 'DP'],
             lbsize: lb_pagesize_small
         },
         {
             name:"pop'n music",
             value:"popn",
-            emoji: "<:popkun:1378360856638918766>",
+            icon: "https://i.imgur.com/CnOx3On.png",
             playtypes: ['9B'],
             lbsize: lb_pagesize_small
         },
         {
             name:"CHUNITHM",
             value:"chunithm",
-            emoji: "<:chunilogo:1378360860350746644>",
+            icon: "https://i.imgur.com/8WMqrGW.png",
             playtypes: ['Single'],
             lbsize: lb_pagesize
         },
         {
             name:"jubeat",
             value:"jubeat",
-            emoji: "<:jubeatlogo:1378360861806297168>",
+            icon: "https://i.imgur.com/2wnHZUA.png",
             playtypes: ['Single'],
             lbsize: lb_pagesize_small
         },
         {
             name:"maimai FiNALE",
             value:"maimai",
-            emoji: "<:maimailogo:1378361009802317834>",
+            icon: "https://i.imgur.com/VWP4Kbk.png",
             playtypes: ['Single'],
             lbsize: lb_pagesize_small
         }

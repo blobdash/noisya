@@ -93,8 +93,9 @@ module.exports = {
         lines = lines.slice((page - 1) * pagesize, page * pagesize);
         const lb = new EmbedBuilder();
         resolver.setSongCover(game, songFromDb, chartFromDb, lb);
-        lb.setTitle(`${gameType.emoji} ${songFromDb.artist} - ${songFromDb.title} [${chartFromDb.difficulty} ${chartFromDb.levelNum}]${resolver.resolveTierList(game, chartFromDb)} - ${playtype}`);
+        lb.setTitle(`${songFromDb.artist} - ${songFromDb.title} [${chartFromDb.difficulty} ${chartFromDb.levelNum}]${resolver.resolveTierList(game, chartFromDb)} - ${playtype}`);
         lb.addFields({name: `Classement (Page ${page})`, value: resolver.resolveClbLineFormatter(game, lines, (page - 1) * pagesize)});
+        lb.setFooter({ text: `${gameType.name}`, iconURL: `${gameType.icon}`});
         await interaction.editReply({ embeds: [lb] });
 	},
     async autocomplete(interaction) {
