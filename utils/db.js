@@ -3,7 +3,7 @@ const sqlite = require('sqlite3').verbose();
 module.exports = {
     async setLink(username, userid) {
         const db = new sqlite.Database("./users.db");
-        db.run("INSERT INTO users VALUES (?, ?) ON CONFLICT(userid) DO UPDATE SET username = ?", [userid, username, username]);
+        db.run("INSERT INTO users VALUES (?, ?, false) ON CONFLICT(userid) DO UPDATE SET username = ?", [userid, username, username]);
         db.close();
     },
     async getLink(userid) {
