@@ -17,7 +17,8 @@ module.exports = {
         "GRV": "GRAVITY",
         "HVN": "HEAVENLY",
         "VVD": "VIVID",
-        "XCD": "EXCEED"
+        "XCD": "EXCEED",
+        "ULT": "ULTIMATE"
     },
     parseDan(dan) {
         if(dan === undefined) return 'n/a';
