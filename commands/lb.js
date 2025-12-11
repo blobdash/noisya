@@ -43,7 +43,7 @@ module.exports = {
         for(const player of players) {
             try {
                 const response = await api.getPlayerProfile(player.username, game, playtype);
-                if(response.success === true) { // ignore invalid users
+                if(response.success === true && response.body.totalScores > 0) { // ignore invalid users
                     // feed lines object with correct game objects
                     resolver.resolveLineFeeder(game, response, lines, player);
                 }
