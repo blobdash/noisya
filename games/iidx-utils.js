@@ -86,7 +86,7 @@ module.exports = {
     },
     feedIidxLbLines(response, lines, player) {
         lines.push({
-            ktLamp: response.body.gameStats.ratings.ktLampRating.toFixed(2),
+            ktLamp: response.body.gameStats.ratings.ktLampRating ? response.body.gameStats.ratings.ktLampRating.toFixed(2) : -1,
             bpi: response.body.gameStats.ratings.BPI,
             player: player.username,
             dan: module.exports.parseDan(response.body.gameStats.classes.dan)
