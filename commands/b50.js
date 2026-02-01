@@ -48,7 +48,7 @@ module.exports = {
                 
                 card.setTitle(`SOUND VOLTEX (EG) Best 50 (${user})`)
                 card.setImage('attachment://image.png')
-                card.setFooter('Provided by Hoshikara (tachisdvxdata.com)')
+                card.setFooter({ text: 'Provided by Hoshikara (tachisdvxdata.com)' })
                 break;
             case "sdvxnabla":
                 response = await fetch("https://tachisdvxdata.com/nablatop50", {
