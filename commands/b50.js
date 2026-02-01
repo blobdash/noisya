@@ -64,7 +64,7 @@ module.exports = {
                 
                 card.setTitle(`SOUND VOLTEX (∇) Best 50 (${user})`)
                 card.setImage('attachment://image.png')
-                card.setFooter('Provided by Hoshikara (tachisdvxdata.com)')
+                card.setFooter({ text: 'Provided by Hoshikara (tachisdvxdata.com)' })
                 break;
         }
         interaction.editReply({embeds: [card], files: [attachment]})
