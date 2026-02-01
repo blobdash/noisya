@@ -40,13 +40,13 @@ module.exports = {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify([user, false])
+                    body: JSON.stringify([user.username, false])
                 });
                 data = await response.text();
                 b64 = Buffer.from(data.substring(data.indexOf("data:image/png"), data.indexOf("1:{\"ok\"")), 'base64');
                 attachment = new AttachmentBuilder(b64, 'image.png')
                 
-                card.setTitle(`SOUND VOLTEX (EG) Best 50 (${user})`)
+                card.setTitle(`SOUND VOLTEX (EG) Best 50 (${user.username})`)
                 card.setImage('attachment://image.png')
                 card.setFooter({ text: 'Provided by Hoshikara (tachisdvxdata.com)' })
                 break;
@@ -56,13 +56,13 @@ module.exports = {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify([user])
+                    body: JSON.stringify([user.username])
                 });
                 data = await response.text();
                 b64 = Buffer.from(data.substring(data.indexOf("data:image/png"), data.indexOf("1:{\"ok\"")), 'base64');
                 attachment = new AttachmentBuilder(b64, 'image.png')
                 
-                card.setTitle(`SOUND VOLTEX (∇) Best 50 (${user})`)
+                card.setTitle(`SOUND VOLTEX (∇) Best 50 (${user.username})`)
                 card.setImage('attachment://image.png')
                 card.setFooter({ text: 'Provided by Hoshikara (tachisdvxdata.com)' })
                 break;
