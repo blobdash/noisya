@@ -26,10 +26,10 @@ module.exports = {
             if(gameTypes.find((gametype) => game.game === gametype.value)) { // ignores games that aren't supported by the bot
                 const profile = await api.getPlayerProfile(user.username, game.game, game.playtype);
                 if(profile.success) {
-                    if(lastplay === null) {
+                    if(lastplay === null && profile.body.mostRecentScore) {
                         lastplay = profile.body.mostRecentScore;
                     } else {
-                        if(lastplay.timeAchieved < profile.body.mostRecentScore.timeAchieved) {
+                        if(profile.body.mostRecentScore && lastplay.timeAchieved < profile.body.mostRecentScore.timeAchieved) {
                             lastplay = profile.body.mostRecentScore;
                         }
                     }
