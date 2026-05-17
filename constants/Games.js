@@ -13,14 +13,14 @@ module.exports = {
             name:"beatmania IIDX",
             value:"iidx",
             icon: "https://i.imgur.com/edxL1Nr.png",
-            playtypes: ['SP', 'DP'],
+            playtypes: ['-sp', '-dp'],
             lbsize: lb_pagesize_small
         },
         {
             name:"pop'n music",
             value:"popn",
             icon: "https://i.imgur.com/CnOx3On.png",
-            playtypes: ['9B'],
+            playtypes: ['Single'],
             lbsize: lb_pagesize_small
         },
         {
