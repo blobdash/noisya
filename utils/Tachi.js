@@ -1,13 +1,12 @@
-const { tachi_api, tachi_cdn } = require('../config.json');
+const { tachi_api } = require('../config.json');
 
 module.exports = class Tachi {
     constructor() {
         this.baseUrl = tachi_api;
-        this.cdn = tachi_cdn;
     }
 
-    async getPlayerProfile(userid, game, playtype) {
-        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}${playtype}`);
+    async getPlayerProfile(userid, game) {
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}`);
         return await response.json();
     }
 
@@ -22,23 +21,22 @@ module.exports = class Tachi {
         return `${this.cdn}/users/${parsed.body.id}/pfp-${parsed.body.customPfpLocation}`;
     }
 
-    async getSongInfo(game, playtype, songId) {
-        const response = await fetch(`${this.baseUrl}/api/v1/games/${game}${playtype}/songs/${songId}`);
+    async getSongInfo(game, songId) {
+        const response = await fetch(`${this.baseUrl}/api/v1/games/${game}/songs/${songId}`);
         return await response.json();
     }
 
-    getProfileUrl(username, game, playtype) {
-        return `${this.baseUrl}/u/${username}/games/${game}/${playtype}`;
+    getProfileUrl(username, game) {
+        return `${this.baseUrl}/u/${username}/games/${game}`;
     }
 
-    async getUserSessions(userid, game, playtype) {
-        if(playtype == 'Single') playtype = ''
-        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}${playtype}/sessions?search=`);
+    async getUserSessions(userid, game) {
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}/sessions?search=`);
         return await response.json();
     }
     
-    async getScoreOnChartForPlayer(userid, game, playtype, chart) {
-        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}${playtype}/pbs/${chart}`);
+    async getScoreOnChartForPlayer(userid, game, chart) {
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/games/${game}/pbs/${chart}`);
         return await response.json();
     }
 

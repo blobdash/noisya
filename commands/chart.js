@@ -1,14 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { gameTypes } = require('../constants/Games.js');
+const { games } = require('../constants/Games.js');
 const Tachi = require('../utils/Tachi.js');
 
-const sdvxsongs = require('../data/songs-sdvx.json');
-const iidxsongs = require('../data/songs-iidx.json');
-const popnsongs = require('../data/songs-popn.json');
-const chunisongs = require('../data/songs-chunithm.json');
-const jubeatsongs = require('../data/songs-jubeat.json');
-const maimaisongs = require('../data/songs-maimai.json');
-const resolver = require('../games/resolver.js');
+const metaresolver = require('../games/meta-resolver.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,65 +12,43 @@ module.exports = {
             option.setName("game")
             .setDescription("Jeu")
             .setRequired(true)
-            .addChoices(gameTypes[0])
-            .addChoices(gameTypes[1])
-            .addChoices(gameTypes[2])
-            .addChoices(gameTypes[3])
-            .addChoices(gameTypes[4])
-            .addChoices(gameTypes[5]))
+            .addChoices(gamemeta[0])
+            .addChoices(gamemeta[1])
+            .addChoices(gamemeta[2])
+            .addChoices(gamemeta[3])
+            .addChoices(gamemeta[4])
+            .addChoices(gamemeta[5])
+            .addChoices(gamemeta[6]))
         .addStringOption(option =>
             option.setName("song")
             .setDescription("Chart")
             .setRequired(true)
-            .setAutocomplete(true))
-        .addStringOption(option => 
-            option.setName("playtype")
-            .setDescription("Mode de jeu")
-            .setRequired(false)
             .setAutocomplete(true)),
 	async execute(interaction) {
 		await interaction.deferReply();
-        const gameType = gameTypes.find((a) => a.value === interaction.options.getString("game"));
-        playtype = interaction.options.getString("playtype");
-        if(playtype === null){
-            // playtype isn't specified : use first in array as default.
-            playtype = gameType.playtypes[0];
-        }
         let emb = new EmbedBuilder();
         const api = new Tachi();
-        const songData = await api.getSongInfo(interaction.options.getString("game"), playtype, interaction.options.getString("song"));
+        const game = interaction.options.getString("game");
+        const songData = await api.getSongInfo(game, interaction.options.getString("song"));
         if(songData.success === false) {
             interaction.editReply("Chart introuvable.");
             return;
         }
-        await resolver.resolveSongInfoFormatter(interaction.options.getString("game"), songData, emb, playtype);
+        await getGame(game).func.songInfo(songData, emb, game);
         interaction.editReply({ embeds: [emb] });
 	},
     async autocomplete(interaction) {
 		const focusedOption = interaction.options.getFocused(true);
         let choices;
         switch (focusedOption.name) {
-            case "playtype":
-                const game = gameTypes.find((game) => game.value === interaction.options.getString("game"));
-                if(game === undefined) {
-                    choices = [];
-                    break;
-                }
-                choices = game.playtypes.map(playtype => (
-                    {
-                        name: playtype,
-                        value: playtype
-                    }
-                ));
-                break;
             case "song":
-                const songslist = resolveGameSongslist(interaction.options.getString("game"));
+                const songlist = metaresolver.resolveSonglist(interaction.options.getString("game"));
                 const song = focusedOption.value.toLowerCase();
-                const matches = songslist.filter((item) =>
+                const matches = songlist.filter((item) =>
                     item.title.toLowerCase().includes(song) ||
                     item.searchTerms.filter((alt) => alt.toLowerCase().includes(song)).length !== 0);
                 if(matches.length >= 25) {
-                    const perfectMatch = songslist.find((item) => item.title.toLowerCase() == song);
+                    const perfectMatch = songlist.find((item) => item.title.toLowerCase() == song);
                     if(perfectMatch) {
                         matches.unshift(perfectMatch);
                     }
@@ -93,20 +65,3 @@ module.exports = {
         await interaction.respond(choices);
     }
 };
-
-function resolveGameSongslist(game) {
-    switch (game) {
-        case "sdvx":
-            return sdvxsongs;
-        case "iidx":
-            return iidxsongs;
-        case "popn":
-            return popnsongs;
-        case "chunithm":
-            return chunisongs;
-        case "jubeat":
-            return jubeatsongs;
-        case "maimai":
-            return maimaisongs;
-    }
-}

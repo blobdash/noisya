@@ -1,13 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { getLink } = require('../utils/db.js');
-const { gameTypes } = require('../constants/Games.js');
+const { gamemeta, getGame } = require('../constants/Games.js');
 const Tachi = require('../utils/Tachi.js');
-const { populateSdvxProfile } = require('../games/sdvx-utils.js');
-const { populateIidxProfile } = require('../games/iidx-utils.js');
-const { populatePopnProfile } = require('../games/popn-utils.js');
-const { populateChuniProfile } = require('../games/chuni-utils.js');
-const { populateJubeatProfile } = require('../games/jubeat-utils.js');
-const { populateMaimaiProfile } = require('../games/maimai-utils.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -17,17 +11,13 @@ module.exports = {
             option.setName("game")
             .setDescription("Jeu à afficher")
             .setRequired(true)
-            .addChoices(gameTypes[0])
-            .addChoices(gameTypes[1])
-            .addChoices(gameTypes[2])
-            .addChoices(gameTypes[3])
-            .addChoices(gameTypes[4])
-            .addChoices(gameTypes[5]))
-        .addStringOption(option => 
-            option.setName("playtype")
-            .setDescription("Mode de jeu")
-            .setRequired(false)
-            .setAutocomplete(true))
+            .addChoices(gamemeta[0])
+            .addChoices(gamemeta[1])
+            .addChoices(gamemeta[2])
+            .addChoices(gamemeta[3])
+            .addChoices(gamemeta[4])
+            .addChoices(gamemeta[5])
+            .addChoices(gamemeta[6]))
         .addStringOption(option =>
             option.setName("username")
             .setDescription("Afficher le profil d'un utilisateur (si vide, soi même)")
@@ -44,58 +34,22 @@ module.exports = {
             await interaction.editReply({ content: "Merci de lier votre compte Tachi avec `/link`.", ephemeral: true });
             return;
         }
-        playtype = interaction.options.getString("playtype");
-        if(playtype === null){
-            // playtype isn't specified : use first in array as default.
-            playtype = gameTypes.find((game) => game.value === interaction.options.getString("game")).playtypes[0];
-        }
         const api = new Tachi();
-        const profile = await api.getPlayerProfile(user.username, interaction.options.getString("game"), playtype);
+        const game = interaction.options.getString("game");
+        const profile = await api.getPlayerProfile(user.username, game);
         const prfl = new EmbedBuilder();
-        prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} ${playtype != 'Single' ? `(${playtype})` : ""}`);
-        prfl.setURL(api.getProfileUrl(user.username, interaction.options.getString("game"), playtype));
+        prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} ${game.startsWith('iidx-') ? `(${game.slice(-2).toUpperCase()})` : ""}`);
+        prfl.setURL(api.getProfileUrl(user.username, game));
         if(profile.success === false) {
             prfl.addFields({ name: "Erreur", value: `${user.username} n'a pas joué à ce jeu ou dans ce mode de jeu.`})
             await interaction.editReply({ embeds: [prfl]} );
             return;
         }
-        populateProfile(prfl, profile, interaction.options.getString("game"));
+        getGame(game).func.populateProfile(prfl, profile);
         prfl.setThumbnail("attachment://image.png");
 		await interaction.editReply({ embeds: [prfl], files: [{
             attachment: await api.resolveUserPfp(user.username),
             name:'image.png'
-          }] });
-	},
-    async autocomplete(interaction) {
-        const game = gameTypes.find((game) => game.value === interaction.options.getString("game"));
-        if(game === undefined) {
-            interaction.respond([]);
-            return;
-        }
-        interaction.respond(game.playtypes.map(playtype => (
-            {
-                name: playtype,
-                value: playtype
-            }
-        )))
-    }
+        }]});
+	}
 };
-
-function populateProfile(prfl, profile, game) {
-    switch (game) {
-        case 'sdvx':
-            return populateSdvxProfile(prfl, profile);
-        case 'iidx':
-            return populateIidxProfile(prfl, profile);
-        case 'popn':
-            return populatePopnProfile(prfl, profile);
-        case 'chunithm':
-            return populateChuniProfile(prfl, profile);
-        case 'jubeat':
-            return populateJubeatProfile(prfl, profile);
-        case 'maimai':
-            return populateMaimaiProfile(prfl, profile);
-        default:
-            break;
-    }
-}
