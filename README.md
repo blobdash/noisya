@@ -8,7 +8,6 @@ Noisy.A is a discord.js bot to communicate with Tachi's API.
 - Player card
 - Leaderboards per game / per song / per difficulty
 - Song information display
-- Folder stats lookup
 
 #### SOUND VOLTEX
 - Kanji lookup on song information
@@ -16,9 +15,6 @@ Noisy.A is a discord.js bot to communicate with Tachi's API.
 
 #### beatmania IIDX
 - BPI Integration
-
-#### pop'n music
-- Custom rating system for leaderboards
 
 ### Setup
 
@@ -33,7 +29,14 @@ Noisy.A is a discord.js bot to communicate with Tachi's API.
 
 For development : `npm run start`.
 
-You've got a few ways to host this :
-- Create a systemd service with the correct node runtime, working directory and executables.
-- Use pm2. Not tested, unsupported but should work without any issues.
-- Clone the repo in a docker container, with the sqlite database mounted inside. You can also automatically regenerate the sqlite database by mounting the seeds and `music_db.xml`. While I probably won't release a dockerfile for this, it shouldn't be hard to do by extending from the [node docker images](https://hub.docker.com/_/node/).
+
+### Contributing
+
+To add support for a game, one must :
+- add a js file for said game in `games` and implement/stub all required functions (refer to other games)
+- link that new game inside `constants/Games`
+- add this game to every command where support is implemented
+- add songlist resolver in `games/song-resolver.js`
+- add game to `utils/unified-data-pull.sh` and/or `zetaraku-meta.json` if needed for automatic seeds and metadata update
+
+A slash commands deployment is required when any modification to command metadata is done.
