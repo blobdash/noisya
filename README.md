@@ -36,7 +36,7 @@ To add support for a game, one must :
 - add a js file for said game in `games` and implement/stub all required functions (refer to `INTERFACE.md`)
 - link that new game inside `constants/Games`
 - add this game to every command where support is implemented
-- add songlist resolver in `games/song-resolver.js`
+- add songlist resolvers in `games/meta-resolver.js`
 - add game to `utils/unified-data-pull.sh` and/or `zetaraku-meta.json` if needed for automatic seeds and metadata update
 
 A slash commands deployment is required when any modification to command metadata is done.
