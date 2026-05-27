@@ -1,0 +1,12 @@
+{
+    "token": "",
+    "clientId": "",
+    "tachi_api": "",
+    "tachi_cdn": "",
+    "sdvx_cdn": "",
+    "popn_cdn": "",
+    "iidx_cdn": "",
+    "zetaraku_cdn": "",
+    "lb_pagesize": 25,
+    "lb_pagesize_small": 15
+}

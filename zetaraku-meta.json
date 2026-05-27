@@ -1,0 +1,19 @@
+{
+    "urls": [
+        {
+            "filename": "chuni-zetaraku.json",
+            "url": "https://dp4p6x0xfi5o9.cloudfront.net/chunithm/data.json",
+            "jobname": "CHUNITHM"
+        },
+        {
+            "filename": "jubeat-zetaraku.json",
+            "url": "https://dp4p6x0xfi5o9.cloudfront.net/jubeat/data.json",
+            "jobname": "jubeat"
+        },
+        {
+            "filename": "maimai-zetaraku.json",
+            "url": "https://dp4p6x0xfi5o9.cloudfront.net/maimai/data.json",
+            "jobname": "maimai finale"
+        }
+    ]
+}
