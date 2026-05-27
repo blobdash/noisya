@@ -11,7 +11,7 @@ const games = [
         name:"SOUND VOLTEX",
         value:"sdvx",
         icon: "https://i.imgur.com/k9tLrjP.png",
-        lbsize: lb_pagesize_small,
+        lbsize: lb_pagesize,
         func: sdvx
     },
     {
