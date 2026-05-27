@@ -38,7 +38,7 @@ module.exports = {
         const game = interaction.options.getString("game");
         const profile = await api.getPlayerProfile(user.username, game);
         const prfl = new EmbedBuilder();
-        prfl.setTitle(`${user.username} | ${gameTypes.find((game) => game.value === interaction.options.getString("game")).name} ${game.startsWith('iidx-') ? `(${game.slice(-2).toUpperCase()})` : ""}`);
+        prfl.setTitle(`${user.username} | ${getGame(game).name}`);
         prfl.setURL(api.getProfileUrl(user.username, game));
         if(profile.success === false) {
             prfl.addFields({ name: "Erreur", value: `${user.username} n'a pas joué à ce jeu ou dans ce mode de jeu.`})

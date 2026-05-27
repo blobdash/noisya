@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { games } = require('../constants/Games.js');
+const { gamemeta, getGame } = require('../constants/Games.js');
 const Tachi = require('../utils/Tachi.js');
 
 const metaresolver = require('../games/meta-resolver.js');
@@ -40,27 +40,23 @@ module.exports = {
     async autocomplete(interaction) {
 		const focusedOption = interaction.options.getFocused(true);
         let choices;
-        switch (focusedOption.name) {
-            case "song":
-                const songlist = metaresolver.resolveSonglist(interaction.options.getString("game"));
-                const song = focusedOption.value.toLowerCase();
-                const matches = songlist.filter((item) =>
-                    item.title.toLowerCase().includes(song) ||
-                    item.searchTerms.filter((alt) => alt.toLowerCase().includes(song)).length !== 0);
-                if(matches.length >= 25) {
-                    const perfectMatch = songlist.find((item) => item.title.toLowerCase() == song);
-                    if(perfectMatch) {
-                        matches.unshift(perfectMatch);
-                    }
-                }
-                choices = matches.map(match => (
-                    {
-                        name: match.title,
-                        value: String(match.id)
-                    }
-                ));
-                break;
+        const songlist = metaresolver.resolveSonglist(interaction.options.getString("game"));
+        const song = focusedOption.value.toLowerCase();
+        const matches = songlist.filter((item) =>
+            item.title.toLowerCase().includes(song) ||
+            item.searchTerms.filter((alt) => alt.toLowerCase().includes(song)).length !== 0);
+        if(matches.length >= 25) {
+            const perfectMatch = songlist.find((item) => item.title.toLowerCase() == song);
+            if(perfectMatch) {
+                matches.unshift(perfectMatch);
+            }
         }
+        choices = matches.map(match => (
+            {
+                name: match.title,
+                value: String(match.id)
+            }
+        ));
         if(choices.length >= 25) choices.length = 25;
         await interaction.respond(choices);
     }

@@ -4,6 +4,8 @@ const entities = require("html-entities");
 const {distance, closest} = require('fastest-levenshtein');
 const iconv = require("iconv-lite");
 
+const metaresolver = require('../games/meta-resolver.js');
+
 const lamps = {
     "NO PLAY": "NP",
     "FAILED": "F",
@@ -97,7 +99,7 @@ async function songInfo(songData, emb, game) {
         { name: "Genre", value: songData.body.song.data.genre },
         { name: "Version", value: versions[songData.body.song.data.displayVersion] }
     )
-    emb.setImage(`${iidx_cdn}/${(songData.body.charts[0].data.inGameID + "").padStart(5, "0")}.gif`);
+    setCover(songData.body.song, songData.body.charts[0], emb);
     
     // init textage db
     const url = "https://textage.cc/score/titletbl.js";
@@ -111,7 +113,7 @@ async function songInfo(songData, emb, game) {
         const textageUrl = getTextageUrl(chart, songData.body.song.title, textageTable, playtype);
         emb.addFields(
             { name: `${chart.difficulty} ${chart.level}`, value:
-                `${module.exports.formatTierlistLine(chart)} ${textageUrl ? `\n[Textage](${textageUrl})` : ""}
+                `${formatTierlistLine(chart)} ${textageUrl ? `\n[Textage](${textageUrl})` : ""}
                 Max EX : ${chart.data.notecount * 2}`
             }
         )
@@ -127,6 +129,72 @@ async function populateProfile(prfl, profile) {
         { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
         { name: "Rang sur Tachi", value: `#${profile.body.rankingData.ktLampRating.ranking}/${profile.body.rankingData.ktLampRating.outOf}`}
     )
+}
+
+async function leaderboardFeeder(response, lines, player) {
+    lines.push({
+        ktLamp: response.body.gameStats.ratings.ktLampRating.toFixed(2),
+        bpi: response.body.gameStats.ratings.BPI,
+        player: player.username,
+        dan: module.exports.parseDan(response.body.gameStats.classes.dan)
+    })
+}
+
+async function leaderboardFormat(lines, standing) {
+    buffer = "";
+    for(const line of lines) {
+        standing++;
+        buffer += `\`#${(standing+"").padEnd(2)} ${(line.ktLamp+"").padStart(6)} | ${(line.bpi ? line.bpi.toFixed(2) : "NO ").padStart(6)}BPI ${line.dan.padStart(11)} | ${line.player}\`\n`
+    }
+    if(buffer.length === 0) return "Aucun joueur dans cette page!";
+    return buffer;
+}
+
+async function lineSorter(lines) {
+    lines.sort((a, b) => b.ktLamp - a.ktLamp);
+}
+
+async function formatPlayInfo(play, emb) {
+    internalChart = metaresolver.resolveChartlist(play.game).find((chart) => chart.id === play.chartID);
+    internalSong = metaresolver.resolveSonglist(play.game).find((song) => song.id === play.songID);
+    setCover(internalSong, internalChart, emb);
+    let bp = play.scoreData.optional.bp ? play.scoreData.optional.bp + "BP" : null
+    let cb = play.scoreData.optional.comboBreak ? play.scoreData.optional.comboBreak + "CB" : null
+    return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}] ${formatTierlistLine(internalChart)}**
+    ${play.scoreData.grade} / ${play.scoreData.lamp} / ${play.scoreData.score}
+    ${bp ? cb ? bp + " / " + cb : bp : ""}
+    ${getGradeDiffs(internalChart, play)}`
+}
+
+async function chartLeaderboardFeeder(response, lines, player) {
+    lines.push({
+        score: response.body.pb.scoreData.score,
+        grade: response.body.pb.scoreData.grade,
+        clear: lamps[response.body.pb.scoreData.lamp],
+        player: player.username
+    });
+}
+
+async function chartLeaderboardFormat(lines, standing) {
+    buffer = "";
+    for(const line of lines) {
+        standing++;
+        buffer += `\`#${(standing+"").padEnd(2)} ${line.grade.padStart(4)} ${line.clear.padStart(4)} ${(line.score+"").padStart(4)} | ${line.player}\`\n`
+    }
+    if(buffer.length === 0) return "Aucun joueur dans cette page!";
+    return buffer;
+}
+
+async function setCover(songData, chartData, emb) {
+    emb.setImage(`${iidx_cdn}/${(chartData.data.inGameID + "").padStart(5, "0")}.gif`);
+}
+
+async function resolveTierList(chart) {
+    if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
+        return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
+    } else {
+        return "";
+    }
 }
 
 const difficulty_textage = {
@@ -216,6 +284,14 @@ function getGradeDiffs(internalChart, play) {
     return closestGrade.grade;
 }
 
+function formatTierlistLine(chart) {
+    if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
+        return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
+    } else {
+        return "";
+    }
+}
+
 function formatDiffTierList(tier) {
     if(tier) {
         return `${tier.text}${tier.individualDifference ? " ⚖️" : ""}`
@@ -223,6 +299,5 @@ function formatDiffTierList(tier) {
 }
 
 module.exports = {
-    lamps, versions, classes,
-    songInfo, populateProfile
+    songInfo, populateProfile, leaderboardFeeder, leaderboardFormat, lineSorter, formatPlayInfo, chartLeaderboardFeeder, chartLeaderboardFormat, setCover, resolveTierList
 }

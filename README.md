@@ -33,7 +33,7 @@ For development : `npm run start`.
 ### Contributing
 
 To add support for a game, one must :
-- add a js file for said game in `games` and implement/stub all required functions (refer to other games)
+- add a js file for said game in `games` and implement/stub all required functions (refer to `INTERFACE.md`)
 - link that new game inside `constants/Games`
 - add this game to every command where support is implemented
 - add songlist resolver in `games/song-resolver.js`

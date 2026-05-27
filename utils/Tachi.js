@@ -1,8 +1,9 @@
-const { tachi_api } = require('../config.json');
+const { tachi_api, tachi_cdn } = require('../config.json');
 
 module.exports = class Tachi {
     constructor() {
         this.baseUrl = tachi_api;
+        this.cdn = tachi_cdn;
     }
 
     async getPlayerProfile(userid, game) {
@@ -41,7 +42,7 @@ module.exports = class Tachi {
     }
 
     async getUserGames(userid) {
-        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/game-stats`);
+        const response = await fetch(`${this.baseUrl}/api/v1/users/${userid}/game-profiles`);
         return await response.json();
     }
 }

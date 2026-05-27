@@ -6,7 +6,8 @@ const jubeatsongs = require('../data/songs-jubeat.json');
 const maimaisongs = require('../data/songs-maimai.json');
 
 const sdvxcharts = require('../data/charts-sdvx.json');
-const iidxcharts = require('../data/charts-iidx.json');
+const iidxchartssp = require('../data/charts-iidx-sp.json');
+const iidxchartsdp = require('../data/charts-iidx-dp.json');
 const popncharts = require('../data/charts-popn.json');
 const chunicharts = require('../data/charts-chunithm.json');
 const jubeatcharts = require('../data/charts-jubeat.json');
@@ -35,8 +36,9 @@ function resolveChartlist(game) {
         case "sdvx":
             return sdvxcharts;
         case "iidx-sp":
+            return iidxchartssp;
         case "iidx-dp":
-            return iidxcharts;
+            return iidxchartsdp;
         case "popn":
             return popncharts;
         case "chunithm":

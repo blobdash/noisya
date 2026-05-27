@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { gameTypes } = require('../constants/Games.js');
-const resolver = require('../games/resolver.js');
+const { getGame } = require('../constants/Games.js');
 const { getLink } = require('../utils/db.js')
 const Tachi = require('../utils/Tachi.js');
 
@@ -22,9 +21,9 @@ module.exports = {
             return;
         }
         let lastplay = null;
-        for(const game of gameslist.body) {
-            if(gameTypes.find((gametype) => game.game === gametype.value)) { // ignores games that aren't supported by the bot
-                const profile = await api.getPlayerProfile(user.username, game.game, game.playtype);
+        for(const entry of gameslist.body) {
+            if(getGame(entry.game)) { // ignores games that aren't supported by the bot
+                const profile = await api.getPlayerProfile(user.username, entry.game);
                 if(profile.success) {
                     if(lastplay === null && profile.body.mostRecentScore) {
                         lastplay = profile.body.mostRecentScore;
@@ -37,11 +36,12 @@ module.exports = {
             }            
         }
         const recent = new EmbedBuilder();
+        const lastplayGame = getGame(lastplay.game);
         recent.setTitle(`${user.username} - Recent`);
         recent.addFields(
-            { name: `${gameTypes.find((game) => game.value === lastplay.game).name} - ${lastplay.playtype}`, value: `${resolver.formatPlayInfo(lastplay, recent)}` }
+            { name: `${lastplayGame.name}`, value: `${await lastplayGame.func.formatPlayInfo(lastplay, recent)}` }
         )
-        recent.setFooter({ text: `${gameTypes.find((game) => game.value === lastplay.game).name}`, iconURL: `${gameTypes.find((game) => game.value === lastplay.game).icon}`});
+        recent.setFooter({ text: `${lastplayGame.name}`, iconURL: `${lastplayGame.icon}`});
 		await interaction.editReply({ embeds: [recent] });
 	},
 };
