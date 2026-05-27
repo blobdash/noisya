@@ -136,7 +136,7 @@ async function leaderboardFeeder(response, lines, player) {
         ktLamp: response.body.gameStats.ratings.ktLampRating.toFixed(2),
         bpi: response.body.gameStats.ratings.BPI,
         player: player.username,
-        dan: module.exports.parseDan(response.body.gameStats.classes.dan)
+        dan: classes[response.body.gameStats.classes.dan]
     })
 }
 

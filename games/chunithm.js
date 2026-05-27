@@ -87,7 +87,7 @@ async function leaderboardFeeder(response, lines, player) {
     lines.push({
         naiverating: response.body.gameStats.ratings.naiveRating.toFixed(2),
         player: player.username,
-        colour: `${module.exports.parseClass(response.body.gameStats.classes.colour)}`
+        colour: `${classes[response.body.gameStats.classes.colour]}`
     })
 }
 
