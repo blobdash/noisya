@@ -40,3 +40,5 @@ To add support for a game, one must :
 - add game to `utils/unified-data-pull.sh` and/or `zetaraku-meta.json` if needed for automatic seeds and metadata update
 
 A slash commands deployment is required when any modification to command metadata is done.
+
+No contributions using AI will be accepted on this repository. I will close and discard your PRs. Feel free to make a fork, but I won't merge your changes upstream.
