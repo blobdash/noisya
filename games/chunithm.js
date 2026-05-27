@@ -46,6 +46,8 @@ const classes = {
     "SILVER": "🌫️",
     "GOLD": "🟨",
     "PLATINUM": "⬜",
+    "PLATINUM_II": "⬜2️⃣",
+    "PLATINUM_III": "⬜3️⃣",
     "RAINBOW": "🌈",
     "RAINBOW_II": "🌈2️⃣",
     "RAINBOW_III": "🌈3️⃣",

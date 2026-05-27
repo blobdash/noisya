@@ -70,7 +70,7 @@ async function leaderboardFeeder(response, lines, player) {
         jubility: response.body.gameStats.ratings.jubility.toFixed(2),
         naiveJubilityDiff: (response.body.gameStats.ratings.jubility - response.body.gameStats.ratings.naiveJubility).toFixed(2),
         player: player.username,
-        colour: module.exports.parseClass(response.body.gameStats.classes.colour)
+        colour: classes[response.body.gameStats.classes.colour]
     })
 }
 
