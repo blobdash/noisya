@@ -1,4 +1,5 @@
 const { songs } = require("../data/maimai-zetaraku.json");
+const { zetaraku_cdn } = require('../config.json');
 
 const metaresolver = require('../games/meta-resolver.js');
 
