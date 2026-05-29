@@ -42,12 +42,11 @@ module.exports = {
 
         const game = interaction.options.getString("game");
         const gameobj = getGame(game);
-        const song = interaction.options.getString("song");
         const songslist = metaresolver.resolveSonglist(game);
-        const songFromDb = songslist.find((item) => item.id == song);
         let chart = interaction.options.getString("diff");
         const chartslist = metaresolver.resolveChartlist(game);
         let chartFromDb = chartslist.find((item) => item.id == chart);
+        const songFromDb = songslist.find((item) => item.id == chart.songID);
 
         for(const player of players) {
             try {
