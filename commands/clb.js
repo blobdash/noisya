@@ -46,7 +46,7 @@ module.exports = {
         let chart = interaction.options.getString("diff");
         const chartslist = metaresolver.resolveChartlist(game);
         let chartFromDb = chartslist.find((item) => item.id == chart);
-        const songFromDb = songslist.find((item) => item.id == chart.songID);
+        const songFromDb = songslist.find((item) => item.id == chartFromDb.songID);
 
         for(const player of players) {
             try {
