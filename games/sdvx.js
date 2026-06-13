@@ -35,7 +35,8 @@ const diffMapper = {
     "HVN": "HEAVENLY",
     "VVD": "VIVID",
     "XCD": "EXCEED",
-    "ULT": "ULTIMATE"
+    "ULT": "ULTIMATE",
+    "NBL": "NABLA"
 }
 
 function parseDan(dan) {
