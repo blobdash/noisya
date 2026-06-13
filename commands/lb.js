@@ -50,7 +50,7 @@ module.exports = {
         if(page === null) page = 1;
         lines = lines.slice((page - 1) * pagesize, page * pagesize);
         const lb = new EmbedBuilder();
-        lb.setTitle(`${gameobj.name}`);
+        lb.setTitle(`${gameobj.name}${gameobj.value === 'sdvx' ? ' (VF7)' : ''}`);
         lb.addFields({name: `Classement (Page ${page})`, value: await gameobj.func.leaderboardFormat(lines, (page - 1) * pagesize)});
         lb.setFooter({ text: `${gameobj.name}`, iconURL: `${gameobj.icon}`});
         await interaction.editReply({ embeds: [lb] });
