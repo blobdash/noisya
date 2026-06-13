@@ -21,7 +21,8 @@ const versions = {
     "heaven": "HEAVENLY HAVEN",
     "vivid": "VIVID WAVE",
     "exceed": "EXCEED GEAR",
-    "konaste": "Konaste"
+    "konaste": "Konaste",
+    "nabla": "∇"
 }
 
 const diffMapper = {
@@ -84,6 +85,7 @@ async function songInfo(songData, emb, game) {
 async function populateProfile(prfl, profile) {
     prfl.addFields(
         { name: "VF6", value: profile.body.gameStats.ratings.VF6.toFixed(3) },
+        { name: "VF7", value: profile.body.gameStats.ratings.VF7.toFixed(3) },
         { name: "Dan", value: parseDan(profile.body.gameStats.classes.dan) },
         { name: "Playcount", value: profile.body.totalScores+"" },
         { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
@@ -93,7 +95,7 @@ async function populateProfile(prfl, profile) {
 
 async function leaderboardFeeder(response, lines, player) {
     lines.push({
-        vf: response.body.gameStats.ratings.VF6.toFixed(3),
+        vf: response.body.gameStats.ratings.VF7.toFixed(3),
         player: player.username,
         dan: parseDan(response.body.gameStats.classes.dan)
     })
@@ -119,7 +121,7 @@ async function formatPlayInfo(play, emb) {
     setCover(internalSong, internalChart, emb);
     return `**${internalSong.artist} - ${internalSong.title} [${internalChart.difficulty} ${internalChart.levelNum}] ${await resolveTierList(internalChart)}**
     ${play.scoreData.grade} / ${play.scoreData.lamp} ${play.scoreData.optional.gauge ? "(" + play.scoreData.optional.gauge + "%)" : ""} / ${play.scoreData.score} 
-    *VF : ${play.calculatedData.VF6}*
+    *${play.calculatedData.VF6} (VF6) / ${play.calculatedData.VF7} (VF7)*
     ${play.scoreData.judgements.critical} / ${play.scoreData.judgements.near} / ${play.scoreData.judgements.miss}`
 }
 
