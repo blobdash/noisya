@@ -78,6 +78,7 @@ const classes = {
     "KYU_5": "五級(5th)",
     "KYU_6": "六級(6th)",
     "KYU_7": "七級(7th)",
+    null:  "ノ段",
     undefined: "ノ段"
 }
 
