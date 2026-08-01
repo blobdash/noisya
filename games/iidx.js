@@ -123,10 +123,10 @@ async function songInfo(songData, emb, game) {
 async function populateProfile(prfl, profile) {
     prfl.addFields(
         { name: "KTLamp Rating", value: `${profile.body.gameStats.ratings.ktLampRating.toFixed(2)} / ${profile.body.gameStats.ratings.ktLampRatingHC.toFixed(2)} (HC) / ${profile.body.gameStats.ratings.ktLampRatingEXHC.toFixed(2)} (EXHC)` },
-        { name: "BPI", value: profile.body.gameStats.ratings.BPI == null ? "-" : profile.body.gameStats.ratings.BPI.toFixed(2) },
-        { name: "Dan", value: classes[profile.body.gameStats.classes.dan] },
-        { name: "Playcount", value: profile.body.totalScores+"" },
-        { name: "Joue depuis", value: profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu" },
+        { name: "BPI", value: `${profile.body.gameStats.ratings.BPI == null ? "-" : profile.body.gameStats.ratings.BPI.toFixed(2)}` },
+        { name: "Dan", value: `${classes[profile.body.gameStats.classes.dan]}` },
+        { name: "Playcount", value: `${profile.body.totalScores}` },
+        { name: "Joue depuis", value: `${profile.body.firstScore ? new Date(profile.body.firstScore.timeAchieved).toLocaleString() : "Inconnu"}` },
         { name: "Rang sur Tachi", value: `#${profile.body.rankingData.ktLampRating.ranking}/${profile.body.rankingData.ktLampRating.outOf}`}
     )
 }
