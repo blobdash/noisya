@@ -35,6 +35,7 @@ const classes = {
     "PINK": "Pink",
     "ORANGE": "Orange",
     "GOLD": "Gold",
+    null: "/",
     undefined: "/"
 }
 

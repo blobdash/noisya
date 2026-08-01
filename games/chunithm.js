@@ -55,6 +55,7 @@ const classes = {
     "RAINBOW_EX_I": "🌈EX",
     "RAINBOW_EX_II": "🌈EX2️⃣",
     "RAINBOW_EX_III": "🌈EX3️⃣",
+    null: "-",
     undefined: "-"
 }
 

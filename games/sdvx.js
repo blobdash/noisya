@@ -41,6 +41,7 @@ const diffMapper = {
 
 function parseDan(dan) {
     if(dan === undefined) return 'n/a';
+    if(dan === null) return 'n/a';
     if(dan.startsWith('DAN_')) {
         return dan.replaceAll('DAN_', 'SL');
     } else if(dan === 'INF') {

@@ -34,6 +34,7 @@ const classes = {
     "SHINDAN_9": "真九段(S9th)",
     "SHINDAN_10": "真十段(S10th)",
     "SHINKAIDEN": "真皆伝(SKAIDEN)",
+    null: "ノ段",
     undefined: "ノ段"
 }
 
