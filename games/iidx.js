@@ -193,6 +193,8 @@ async function setCover(songData, chartData, emb) {
 async function resolveTierList(chart) {
     if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
         return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
+    } else if(chart.data.dpTier) {
+        return `DPT ${formatDiffTierList(chart.data.dpTier)}`
     } else {
         return "";
     }
