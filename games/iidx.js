@@ -288,6 +288,8 @@ function getGradeDiffs(internalChart, play) {
 function formatTierlistLine(chart) {
     if(chart.data.ncTier || chart.data.hcTier || chart.data.exhcTier) {
         return `${formatDiffTierList(chart.data.ncTier)} / ${formatDiffTierList(chart.data.hcTier)} / ${formatDiffTierList(chart.data.exhcTier)}`
+    } else if(chart.data.dpTier) {
+        return `DP Tier : ${formatDiffTierList(chart.data.dpTier)}`
     } else {
         return "";
     }
